@@ -224,6 +224,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 066b94c8d9e25804987bed5c6eb556f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Background
+--- !u!1 &126859401 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1649576280277407282, guid: 21a32323df5dbe744a250af1e6487e28, type: 3}
+  m_PrefabInstance: {fileID: 7643224554353464533}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &126859402
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 126859401}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f22b65dd49576c9458238b5d1fa9b54b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MonsterController
+  canMove: 1
+  moveSpeed: 3
+  destroyXThreshold: -12
+  playerTag: Player
+  animator: {fileID: 0}
+  spriteRenderer: {fileID: 126859405}
+  deathTrigger: Death
+  deathAnimationDuration: 0.3
+--- !u!212 &126859405 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 944801927246393871, guid: 21a32323df5dbe744a250af1e6487e28, type: 3}
+  m_PrefabInstance: {fileID: 7643224554353464533}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &208595677
 GameObject:
   m_ObjectHideFlags: 0
@@ -1114,7 +1144,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1649576280277407282, guid: 21a32323df5dbe744a250af1e6487e28, type: 3}
       propertyPath: m_Name
-      value: Square
+      value: Monster
       objectReference: {fileID: 0}
     - target: {fileID: 7831785200618756314, guid: 21a32323df5dbe744a250af1e6487e28, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1159,7 +1189,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1649576280277407282, guid: 21a32323df5dbe744a250af1e6487e28, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 126859402}
   m_SourcePrefab: {fileID: 100100000, guid: 21a32323df5dbe744a250af1e6487e28, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

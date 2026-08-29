@@ -1,16 +1,11 @@
 using UnityEngine;
-using TMPro;
 
 public class ScoreManager : MonoBehaviour
 {
     public static ScoreManager Instance { get; private set; }
 
-    [Header("UI References")]
-    [SerializeField] private TextMeshProUGUI scoreText;
-    [SerializeField] private TextMeshProUGUI comboText;
-
-    public int CurrentScore { get; private set; }
     public int CurrentCombo { get; private set; }
+    public int TotalMisses { get; private set; }
 
     private void Awake()
     {
@@ -29,29 +24,24 @@ public class ScoreManager : MonoBehaviour
         ResetAll();
     }
 
-    public void RegisterHit(int basePoints = 100)
+    public void RegisterHit()
     {
+        TotalMisses = 0;
         CurrentCombo++;
-        CurrentScore += basePoints + (CurrentCombo * 10);
-        UpdateUI();
+        Debug.Log($"Combo: {CurrentCombo}");
     }
 
     public void RegisterMiss()
     {
         CurrentCombo = 0;
-        UpdateUI();
+        TotalMisses++;
+        Debug.Log($"Miss: {TotalMisses}");
     }
 
     public void ResetAll()
     {
-        CurrentScore = 0;
         CurrentCombo = 0;
-        UpdateUI();
-    }
-
-    private void UpdateUI()
-    {
-        if (scoreText != null) scoreText.text = $"Score: {CurrentScore}";
-        if (comboText != null) comboText.text = $"Combo: {CurrentCombo}";
+        TotalMisses = 0;
+        Debug.Log($"Combo: {CurrentCombo} | Miss: {TotalMisses}");
     }
 }

@@ -74,6 +74,7 @@ public class PlayerController : MonoBehaviour
             spriteRenderer.enabled = true;
         }
         isInvincible = false;
+        Debug.Log("[PLAYER] Invincibility ended.");
     }
 
     private void OnDrawGizmosSelected()

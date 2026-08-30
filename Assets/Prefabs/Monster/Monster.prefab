@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 3802479553203916107}
   - component: {fileID: 3706590053495539752}
   m_Layer: 3
-  m_Name: Square
+  m_Name: Monster
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

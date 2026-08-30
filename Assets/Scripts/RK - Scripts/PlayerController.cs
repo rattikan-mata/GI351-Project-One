@@ -1,6 +1,5 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.Audio;
 
 public class PlayerController : MonoBehaviour
 {
@@ -16,16 +15,6 @@ public class PlayerController : MonoBehaviour
     [Header("Components")]
     [SerializeField] private Animator animator;
     [SerializeField] private SpriteRenderer spriteRenderer;
-    [SerializeField] private AudioSource audioSource;
-
-    [Header("Sound Settings")]
-    [SerializeField] private AudioClip[] hurtSounds;
-    [Range(0f, 1f)]
-    [SerializeField] private float hurtSoundVolume = 1f;
-    [SerializeField] private bool limitHurtSoundDuration = false;
-    [SerializeField] private float maxHurtSoundDuration = 1f;
-
-    private Coroutine stopHurtSoundCoroutine;
 
     private bool isInvincible = false;
 
@@ -33,7 +22,6 @@ public class PlayerController : MonoBehaviour
     {
         if (animator == null) animator = GetComponent<Animator>();
         if (spriteRenderer == null) spriteRenderer = GetComponent<SpriteRenderer>();
-        if (audioSource == null) audioSource = GetComponent<AudioSource>();
     }
 
     private void Update()
@@ -72,25 +60,6 @@ public class PlayerController : MonoBehaviour
 
         Debug.Log("Monster Damage");
         ScoreManager.Instance.RegisterMiss();
-
-        if (audioSource != null && hurtSounds != null && hurtSounds.Length > 0)
-        {
-            AudioClip clipToPlay = hurtSounds[Random.Range(0, hurtSounds.Length)];
-
-            audioSource.Stop();
-            audioSource.PlayOneShot(clipToPlay, hurtSoundVolume);
-
-            if (stopHurtSoundCoroutine != null)
-            {
-                StopCoroutine(stopHurtSoundCoroutine);
-            }
-
-            if (limitHurtSoundDuration)
-            {
-                stopHurtSoundCoroutine = StartCoroutine(StopHurtSoundAfterDelay(maxHurtSoundDuration));
-            }
-        }
-
         StartCoroutine(InvincibilityRoutine());
     }
 
@@ -118,15 +87,6 @@ public class PlayerController : MonoBehaviour
 
         isInvincible = false;
         Debug.Log("Normal State");
-    }
-    private IEnumerator StopHurtSoundAfterDelay(float delay)
-    {
-        yield return new WaitForSeconds(delay);
-        if (audioSource != null)
-        {
-            audioSource.Stop();
-        }
-        stopHurtSoundCoroutine = null;
     }
 
     private void OnDrawGizmosSelected()

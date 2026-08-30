@@ -18,7 +18,6 @@ public class Background : MonoBehaviour
         float speed = (GameManager.Instance != null) ? GameManager.Instance.GameSpeed : 5f;
         transform.Translate(Vector2.left * (speed * Time.deltaTime));
 
-        // เมื่อเลื่อนจนสุดความกว้างของ Sprite ให้ย้ายกลับไปตำแหน่งเริ่มต้น
         if (transform.position.x <= startPosition.x - spriteWidth)
         {
             transform.position = startPosition;

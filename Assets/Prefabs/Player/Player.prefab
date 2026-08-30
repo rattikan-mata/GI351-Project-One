@@ -115,7 +115,7 @@ MonoBehaviour:
     m_Bits: 8
   invincibilityDuration: 2
   flashInterval: 0.15
-  animator: {fileID: 0}
+  animator: {fileID: 8446918526885390186}
   spriteRenderer: {fileID: 7329845505709474665}
 --- !u!61 &6036488934228421445
 BoxCollider2D:

@@ -8,7 +8,7 @@ public class Monster : MonoBehaviour
     private void Update()
     {
         float speed = (GameManager.Instance != null) ? GameManager.Instance.GameSpeed : 5f;
-        transform.Translate(Vector2.left * (speed * Time.deltaTime));
+        transform.position += Vector3.left * (speed * Time.deltaTime);
 
         if (transform.position.x <= despawnX)
         {

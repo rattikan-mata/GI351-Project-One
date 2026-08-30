@@ -5,7 +5,6 @@ public class ScoreManager : MonoBehaviour
     public static ScoreManager Instance { get; private set; }
 
     public int CurrentCombo { get; private set; }
-    public int TotalMisses { get; private set; }
 
     private void Awake()
     {
@@ -26,22 +25,18 @@ public class ScoreManager : MonoBehaviour
 
     public void RegisterHit()
     {
-        TotalMisses = 0;
         CurrentCombo++;
-        Debug.Log($"Combo: {CurrentCombo}");
+        Debug.Log($"COMBO = {CurrentCombo}");
     }
 
     public void RegisterMiss()
     {
         CurrentCombo = 0;
-        TotalMisses++;
-        Debug.Log($"Miss: {TotalMisses}");
+        Debug.Log("MISS!");
     }
 
     public void ResetAll()
     {
         CurrentCombo = 0;
-        TotalMisses = 0;
-        Debug.Log($"Combo: {CurrentCombo} | Miss: {TotalMisses}");
     }
 }

@@ -18,6 +18,12 @@ public class PlayerController : MonoBehaviour
 
     private bool isInvincible = false;
 
+    private void Awake()
+    {
+        if (animator == null) animator = GetComponent<Animator>();
+        if (spriteRenderer == null) spriteRenderer = GetComponent<SpriteRenderer>();
+    }
+
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space))
@@ -28,6 +34,8 @@ public class PlayerController : MonoBehaviour
 
     private void PerformHit()
     {
+        Debug.Log("Player Hit");
+
         if (animator != null)
         {
             animator.SetTrigger("Hit");
@@ -50,6 +58,7 @@ public class PlayerController : MonoBehaviour
     {
         if (isInvincible) return;
 
+        Debug.Log("Monster Damage");
         ScoreManager.Instance.RegisterMiss();
         StartCoroutine(InvincibilityRoutine());
     }
@@ -58,12 +67,14 @@ public class PlayerController : MonoBehaviour
     {
         isInvincible = true;
         float elapsed = 0f;
+        Color originalColor = (spriteRenderer != null) ? spriteRenderer.color : Color.white;
 
         while (elapsed < invincibilityDuration)
         {
             if (spriteRenderer != null)
             {
-                spriteRenderer.enabled = !spriteRenderer.enabled;
+                float alpha = (spriteRenderer.color.a == 1f) ? 0.2f : 1f;
+                spriteRenderer.color = new Color(originalColor.r, originalColor.g, originalColor.b, alpha);
             }
             yield return new WaitForSeconds(flashInterval);
             elapsed += flashInterval;
@@ -71,10 +82,11 @@ public class PlayerController : MonoBehaviour
 
         if (spriteRenderer != null)
         {
-            spriteRenderer.enabled = true;
+            spriteRenderer.color = originalColor;
         }
+
         isInvincible = false;
-        Debug.Log("[PLAYER] Invincibility ended.");
+        Debug.Log("Normal State");
     }
 
     private void OnDrawGizmosSelected()

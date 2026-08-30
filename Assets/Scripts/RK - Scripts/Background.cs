@@ -4,11 +4,9 @@ using UnityEngine;
 public class Background : MonoBehaviour
 {
     private float spriteWidth;
-    private Vector3 startPosition;
 
     private void Start()
     {
-        startPosition = transform.position;
         SpriteRenderer sr = GetComponent<SpriteRenderer>();
         spriteWidth = sr.bounds.size.x;
     }
@@ -16,11 +14,11 @@ public class Background : MonoBehaviour
     private void Update()
     {
         float speed = (GameManager.Instance != null) ? GameManager.Instance.GameSpeed : 5f;
-        transform.Translate(Vector2.left * (speed * Time.deltaTime));
+        transform.position += Vector3.left * (speed * Time.deltaTime);
 
-        if (transform.position.x <= startPosition.x - spriteWidth)
+        if (transform.position.x <= -spriteWidth)
         {
-            transform.position = startPosition;
+            transform.position += Vector3.right * (spriteWidth * 2f);
         }
     }
 }

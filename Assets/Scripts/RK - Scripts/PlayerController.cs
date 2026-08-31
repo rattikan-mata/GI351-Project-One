@@ -17,7 +17,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private SpriteRenderer spriteRenderer;
 
     private bool isInvincible = false;
-
+    private int hp = 3;
     private void Awake()
     {
         if (animator == null) animator = GetComponent<Animator>();
@@ -58,9 +58,24 @@ public class PlayerController : MonoBehaviour
     {
         if (isInvincible) return;
 
-        Debug.Log("Monster Damage");
+        hp--;
+
+        Debug.Log("HP = " + hp);
+
+        if (hp <= 0)
+        {
+            Die();
+            return;
+        }
+
         ScoreManager.Instance.RegisterMiss();
         StartCoroutine(InvincibilityRoutine());
+    }
+
+    void Die()
+    {
+        Debug.Log("PLAYER DEAD");
+        Destroy(gameObject);
     }
 
     private IEnumerator InvincibilityRoutine()

@@ -4,6 +4,7 @@ public class ScoreManager : MonoBehaviour
 {
     public static ScoreManager Instance { get; private set; }
 
+    public int Score { get; private set; }
     public int CurrentCombo { get; private set; }
 
     private void Awake()
@@ -25,8 +26,9 @@ public class ScoreManager : MonoBehaviour
 
     public void RegisterHit()
     {
+        Score += 100;
         CurrentCombo++;
-        Debug.Log($"COMBO = {CurrentCombo}");
+        Debug.Log("COMBO = " + CurrentCombo + " | SCORE = " + Score);
     }
 
     public void RegisterMiss()

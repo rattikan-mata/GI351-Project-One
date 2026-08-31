@@ -684,6 +684,10 @@ MonoBehaviour:
   monsterPrefab: {fileID: 1649576280277407282, guid: 21a32323df5dbe744a250af1e6487e28, type: 3}
   spawnPoint: {fileID: 370044540}
   spawnInterval: 2
+  monstersPerWave: 10
+  totalWavesToWin: 2
+  delayBetweenWaves: 2
+  winPanel: {fileID: 0}
 --- !u!4 &704738130
 Transform:
   m_ObjectHideFlags: 0

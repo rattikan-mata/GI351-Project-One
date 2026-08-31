@@ -14,6 +14,15 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Transform spawnPoint;
     [SerializeField] private float spawnInterval = 2f;
 
+    [Header("Wave Settings")]
+    [SerializeField] private int monstersPerWave = 10;
+    [SerializeField] private int totalWavesToWin = 2;
+    [SerializeField] private float delayBetweenWaves = 3f;
+    
+    [Header("Win Settings")]
+    [SerializeField] private GameObject winPanel;
+
+    public int CurrentWave { get; private set; }
     private bool isGameRunning = true;
 
     private void Awake()
@@ -30,21 +39,44 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        StartCoroutine(SpawnMonsterRoutine());
+        StartCoroutine(WaveRoutine());
     }
 
-    private IEnumerator SpawnMonsterRoutine()
+    private IEnumerator WaveRoutine()
     {
-        while (isGameRunning)
+        while (isGameRunning && CurrentWave < totalWavesToWin)
         {
-            yield return new WaitForSeconds(spawnInterval);
-            if (monsterPrefab != null && spawnPoint != null)
+            CurrentWave++;
+
+            for (int i = 0; i < monstersPerWave; i++)
             {
-                Instantiate(monsterPrefab, spawnPoint.position, Quaternion.identity);
+                if (monsterPrefab != null && spawnPoint != null)
+                {
+                    Instantiate(monsterPrefab, spawnPoint.position, Quaternion.identity);
+                }
+                yield return new WaitForSeconds(spawnInterval);
+            }
+
+            if (CurrentWave < totalWavesToWin)
+            {
+                yield return new WaitForSeconds(delayBetweenWaves);
             }
         }
+
+        WinGame();
     }
 
+    private void WinGame()
+    {
+        isGameRunning = false;
+        Debug.Log("YOU WIN!");
+
+        if (winPanel != null)
+        {
+            winPanel.SetActive(true);
+        }
+    }
+   
     public void SetGameSpeed(float newSpeed)
     {
         gameSpeed = newSpeed;

@@ -15,7 +15,9 @@ public class PlayerController : MonoBehaviour
     [Header("Components")]
     [SerializeField] private Animator animator;
     [SerializeField] private SpriteRenderer spriteRenderer;
+    [SerializeField] private Sprite deathSprite;
 
+    private bool isDead = false;
     private bool isInvincible = false;
     private int hp = 3;
     private void Awake()
@@ -26,6 +28,8 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
+        if (isDead) return;
+
         if (Input.GetKeyDown(KeyCode.Space))
         {
             PerformHit();
@@ -74,10 +78,16 @@ public class PlayerController : MonoBehaviour
 
     void Die()
     {
-        Debug.Log("PLAYER DEAD");
-        Destroy(gameObject);
-    }
+        isDead = true;
 
+        if (animator != null)
+            animator.enabled = false;
+
+        if (spriteRenderer != null)
+            spriteRenderer.sprite = deathSprite;
+
+        Debug.Log("PLAYER HAS DIED");
+    }
     private IEnumerator InvincibilityRoutine()
     {
         isInvincible = true;

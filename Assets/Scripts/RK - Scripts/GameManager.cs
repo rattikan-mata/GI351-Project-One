@@ -135,7 +135,7 @@ public class GameManager : MonoBehaviour
 
     public void TriggerGameWin()
     {
-        GameSpeed = 0f; // หยุดฉากหลังทันทีที่ชนะเกม เพื่อให้ตัวละครวิ่งไปหาประตูไม่ขัดตา
+        GameSpeed = 0f; // หยุดฉากหลังทันทีที่ชนะเกม เพื่อให้ตัวละครวิ่งไปหาประตู
         Time.timeScale = 0f;
         if (UIManager.Instance != null)
         {

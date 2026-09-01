@@ -22,6 +22,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Animator animator;
     [SerializeField] private SpriteRenderer spriteRenderer;
 
+    [Header("Secret Win Settings")]
+    [SerializeField] private float walkSpeed = 3f; 
+
     private Transform cachedTransform;
     private bool isInvincible = false;
     private bool isDead = false;
@@ -67,7 +70,7 @@ public class PlayerController : MonoBehaviour
         {
             if (targetSecretChar != null)
             {
-                cachedTransform.position = Vector3.MoveTowards(cachedTransform.position, targetSecretChar.position, 3f * Time.deltaTime);
+                cachedTransform.position = Vector3.MoveTowards(cachedTransform.position, targetSecretChar.position, walkSpeed * Time.deltaTime);
             }
             return;
         }

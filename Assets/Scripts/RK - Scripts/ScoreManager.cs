@@ -7,6 +7,10 @@ public class ScoreManager : MonoBehaviour
     public int Score { get; private set; }
     public int CurrentCombo { get; private set; }
 
+    [Header("Feedback Colors")]
+    [SerializeField] private Color hitColor = Color.green;
+    [SerializeField] private Color missColor = Color.red;
+
     private void Awake()
     {
         if (Instance == null)
@@ -30,10 +34,11 @@ public class ScoreManager : MonoBehaviour
         CurrentCombo++;
         Debug.Log("COMBO = " + CurrentCombo + " | SCORE = " + Score);
 
+        // UI hit และ สี
         if (UIManager.Instance != null)
         {
             UIManager.Instance.UpdateScoreAndCombo(Score, CurrentCombo);
-            UIManager.Instance.ShowFeedback("Hit!", Color.green);
+            UIManager.Instance.ShowFeedback("Hit!", hitColor); // เปลี่ยนมาใช้สีจาก Inspector
         }
     }
 
@@ -42,10 +47,11 @@ public class ScoreManager : MonoBehaviour
         CurrentCombo = 0;
         Debug.Log("MISS!");
 
+        // UI miss และ สี
         if (UIManager.Instance != null)
         {
             UIManager.Instance.UpdateScoreAndCombo(Score, CurrentCombo);
-            UIManager.Instance.ShowFeedback("Miss!", Color.red);
+            UIManager.Instance.ShowFeedback("Miss!", missColor); // เปลี่ยนมาใช้สีจาก Inspector
         }
     }
 

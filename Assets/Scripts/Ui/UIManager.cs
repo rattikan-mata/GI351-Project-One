@@ -21,6 +21,9 @@ public class UIManager : MonoBehaviour
     private Coroutine feedbackCoroutine;
     private WaitForSeconds waitFeedback;
 
+    [Header("Combo UI")]
+    [SerializeField] private GameObject comboContainer; 
+
     [Header("Panels")]
     [SerializeField] private GameObject mainMenuPanel;
     [SerializeField] private GameObject creditPanel;
@@ -70,17 +73,15 @@ public class UIManager : MonoBehaviour
     {
         if (scoreText != null) scoreText.SetText("{0}", score);
 
-        if (comboText != null)
+        
+        if (comboContainer != null)
         {
-            if (combo > 0)
-            {
-                if (!comboText.gameObject.activeSelf) comboText.gameObject.SetActive(true);
-                comboText.SetText("{0}", combo);
-            }
-            else
-            {
-                if (comboText.gameObject.activeSelf) comboText.gameObject.SetActive(false);
-            }
+            comboContainer.SetActive(combo > 0);
+        }
+
+        if (comboText != null && combo > 0)
+        {
+            comboText.SetText("{0}", combo);
         }
     }
 

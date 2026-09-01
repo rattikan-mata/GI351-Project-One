@@ -39,11 +39,11 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    
+
     public void UpdateScoreAndCombo(int score, int combo)
     {
-        if (scoreText != null) scoreText.text = "Score: " + score;
-        if (comboText != null) comboText.text = "Combo: " + combo;
+        if (scoreText != null) scoreText.text = score.ToString();
+        if (comboText != null) comboText.text = combo.ToString();
     }
 
     public void ShowFeedback(string message, Color color)

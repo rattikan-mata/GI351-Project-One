@@ -4,8 +4,9 @@ public class ScoreManager : MonoBehaviour
 {
     public static ScoreManager Instance { get; private set; }
 
-    public int Score { get; private set; }
+    public int CurrentScore { get; private set; }
     public int CurrentCombo { get; private set; }
+    public int TotalMisses { get; private set; }
 
     [Header("Feedback Colors")]
     [SerializeField] private Color hitColor = Color.green;
@@ -13,14 +14,8 @@ public class ScoreManager : MonoBehaviour
 
     private void Awake()
     {
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
+        if (Instance == null) Instance = this;
+        else Destroy(gameObject);
     }
 
     private void Start()
@@ -28,35 +23,37 @@ public class ScoreManager : MonoBehaviour
         ResetAll();
     }
 
-    public void RegisterHit()
+    public void RegisterHit(int baseMonsterScore = 100)
     {
-        Score += 100;
         CurrentCombo++;
-        Debug.Log("COMBO = " + CurrentCombo + " | SCORE = " + Score);
+        int gainedScore = baseMonsterScore + (CurrentCombo * 10);
+        CurrentScore += gainedScore;
+        Debug.Log($"COMBO = {CurrentCombo} | SCORE = {CurrentScore}");
 
-        // UI hit และ สี
         if (UIManager.Instance != null)
         {
-            UIManager.Instance.UpdateScoreAndCombo(Score, CurrentCombo);
-            UIManager.Instance.ShowFeedback("Hit!", hitColor); // เปลี่ยนมาใช้สีจาก Inspector
+            UIManager.Instance.UpdateScoreUI(CurrentScore, CurrentCombo);
+            UIManager.Instance.ShowFeedback("Hit!", hitColor);
         }
     }
 
     public void RegisterMiss()
     {
         CurrentCombo = 0;
+        TotalMisses++;
         Debug.Log("MISS!");
 
-        // UI miss และ สี
         if (UIManager.Instance != null)
         {
-            UIManager.Instance.UpdateScoreAndCombo(Score, CurrentCombo);
-            UIManager.Instance.ShowFeedback("Miss!", missColor); // เปลี่ยนมาใช้สีจาก Inspector
+            UIManager.Instance.UpdateScoreUI(CurrentScore, CurrentCombo);
+            UIManager.Instance.ShowFeedback("Miss!", missColor);
         }
     }
 
     public void ResetAll()
     {
+        CurrentScore = 0;
         CurrentCombo = 0;
+        TotalMisses = 0;
     }
 }

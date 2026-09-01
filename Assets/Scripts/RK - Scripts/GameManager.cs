@@ -1,84 +1,140 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+
+[System.Serializable]
+public class WaveData
+{
+    public string waveName;
+    public int monsterCount;
+    public float speedMultiplier = 1f;
+    public float spawnInterval = 2f;
+}
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
 
-    [Header("Game Settings")]
-    [SerializeField] private float gameSpeed = 5f;
-    public float GameSpeed => gameSpeed;
+    [Header("Game Speed")]
+    [SerializeField] private float baseGameSpeed = 5f;
+    public float GameSpeed { get; private set; }
 
-    [Header("Spawner Settings")]
+    [Header("Wave Configuration")]
+    [SerializeField]
+    private List<WaveData> waves = new List<WaveData>
+    {
+        new WaveData { waveName = "Wave 1", monsterCount = 10, speedMultiplier = 1f, spawnInterval = 2f },
+        new WaveData { waveName = "Wave 2", monsterCount = 15, speedMultiplier = 1.3f, spawnInterval = 1.6f }
+    };
+
+    [Header("Spawner References")]
     [SerializeField] private GameObject monsterPrefab;
     [SerializeField] private Transform spawnPoint;
-    [SerializeField] private float spawnInterval = 2f;
 
-    [Header("Wave Settings")]
-    [SerializeField] private int monstersPerWave = 10;
-    [SerializeField] private int totalWavesToWin = 2;
-    [SerializeField] private float delayBetweenWaves = 3f;
-    
-    [Header("Win Settings")]
-    [SerializeField] private GameObject winPanel;
+    [Header("Secret Character (Win Condition)")]
+    [SerializeField] private GameObject secretCharacterPrefab;
+    [SerializeField] private Transform secretSpawnPoint;
 
-    public int CurrentWave { get; private set; }
-    private bool isGameRunning = true;
+    private int currentWaveIndex = 0;
+    private int monstersRemainingToSpawn = 0;
+    private int activeMonstersInScene = 0;
+    private bool isSpawning = false;
+    private readonly WaitForSeconds waitGameOver = new WaitForSeconds(1.5f);
 
     private void Awake()
     {
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
+        if (Instance == null) Instance = this;
+        else Destroy(gameObject);
     }
 
     private void Start()
     {
-        StartCoroutine(WaveRoutine());
+        GameSpeed = baseGameSpeed;
+        StartNextWave();
     }
 
-    private IEnumerator WaveRoutine()
+    public void StartNextWave()
     {
-        while (isGameRunning && CurrentWave < totalWavesToWin)
+        if (currentWaveIndex < waves.Count)
         {
-            CurrentWave++;
-
-            for (int i = 0; i < monstersPerWave; i++)
-            {
-                if (monsterPrefab != null && spawnPoint != null)
-                {
-                    Instantiate(monsterPrefab, spawnPoint.position, Quaternion.identity);
-                }
-                yield return new WaitForSeconds(spawnInterval);
-            }
-
-            if (CurrentWave < totalWavesToWin)
-            {
-                yield return new WaitForSeconds(delayBetweenWaves);
-            }
-        }
-
-        WinGame();
-    }
-
-    private void WinGame()
-    {
-        isGameRunning = false;
-        Debug.Log("YOU WIN!");
-
-        if (winPanel != null)
-        {
-            winPanel.SetActive(true);
+            WaveData wave = waves[currentWaveIndex];
+            GameSpeed = baseGameSpeed * wave.speedMultiplier;
+            monstersRemainingToSpawn = wave.monsterCount;
+            StartCoroutine(SpawnWaveRoutine(wave));
         }
     }
-   
-    public void SetGameSpeed(float newSpeed)
+
+    private IEnumerator SpawnWaveRoutine(WaveData wave)
     {
-        gameSpeed = newSpeed;
+        isSpawning = true;
+        WaitForSeconds waitInterval = new WaitForSeconds(wave.spawnInterval);
+
+        while (monstersRemainingToSpawn > 0)
+        {
+            yield return waitInterval;
+            if (monsterPrefab != null && spawnPoint != null)
+            {
+                Instantiate(monsterPrefab, spawnPoint.position, Quaternion.identity);
+                monstersRemainingToSpawn--;
+                activeMonstersInScene++;
+            }
+        }
+        isSpawning = false;
+    }
+
+    public void OnMonsterDespawnedOrKilled()
+    {
+        activeMonstersInScene--;
+
+        if (!isSpawning && monstersRemainingToSpawn <= 0 && activeMonstersInScene <= 0)
+        {
+            currentWaveIndex++;
+
+            if (currentWaveIndex < waves.Count)
+            {
+                StartNextWave();
+            }
+            else
+            {
+                TriggerSecretCharacterSpawn();
+            }
+        }
+    }
+
+    private void TriggerSecretCharacterSpawn()
+    {
+        Debug.Log("[ALL WAVES CLEARED] Spawning Secret Character...");
+        if (secretCharacterPrefab != null && secretSpawnPoint != null)
+        {
+            GameObject secretChar = Instantiate(secretCharacterPrefab, secretSpawnPoint.position, Quaternion.identity);
+            if (PlayerController.Instance != null)
+            {
+                PlayerController.Instance.StartWalkingToSecret(secretChar.transform);
+            }
+        }
+    }
+
+    public void TriggerGameOver()
+    {
+        StartCoroutine(GameOverDelayRoutine());
+    }
+
+    private IEnumerator GameOverDelayRoutine()
+    {
+        yield return waitGameOver;
+        Time.timeScale = 0f;
+        if (UIManager.Instance != null)
+        {
+            UIManager.Instance.ShowGameOver();
+        }
+    }
+
+    public void TriggerGameWin()
+    {
+        Time.timeScale = 0f;
+        if (UIManager.Instance != null)
+        {
+            UIManager.Instance.ShowGameWin();
+        }
     }
 }

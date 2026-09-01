@@ -4,13 +4,19 @@ using UnityEngine;
 public class Monster : MonoBehaviour
 {
     [SerializeField] private float despawnX = -15f;
+    private Transform cachedTransform;
+
+    private void Awake()
+    {
+        cachedTransform = transform;
+    }
 
     private void Update()
     {
         float speed = (GameManager.Instance != null) ? GameManager.Instance.GameSpeed : 5f;
-        transform.position += Vector3.left * (speed * Time.deltaTime);
+        cachedTransform.position += Vector3.left * (speed * Time.deltaTime);
 
-        if (transform.position.x <= despawnX)
+        if (cachedTransform.position.x <= despawnX)
         {
             Destroy(gameObject);
         }
@@ -20,11 +26,18 @@ public class Monster : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
-            PlayerController player = collision.GetComponent<PlayerController>();
-            if (player != null)
+            if (collision.TryGetComponent<PlayerController>(out var player))
             {
                 player.TakeDamage();
             }
+        }
+    }
+
+    private void OnDestroy()
+    {
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.OnMonsterDespawnedOrKilled();
         }
     }
 }

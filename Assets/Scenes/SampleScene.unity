@@ -159,6 +159,13 @@ MonoBehaviour:
   comboText: {fileID: 563385543}
   feedbackText: {fileID: 1860307852}
   feedbackDisplayTime: 0.7
+  mainMenuPanel: {fileID: 0}
+  creditPanel: {fileID: 0}
+  pausePanel: {fileID: 0}
+  gameOverPanel: {fileID: 0}
+  gameWinPanel: {fileID: 0}
+  gameOverScoreText: {fileID: 0}
+  gameWinScoreText: {fileID: 0}
 --- !u!114 &79282177
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -534,7 +541,7 @@ GameObject:
   m_Component:
   - component: {fileID: 370044540}
   m_Layer: 0
-  m_Name: Spawn
+  m_Name: SpawnMonster
   m_TagString: Untagged
   m_Icon: {fileID: -964228994112308473, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -1043,8 +1050,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3820b2546c6e5484d882e9725e00f306, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ScoreManager
-  hitColor: {r: 0.91372555, g: 0.39607844, b: 0.70980394, a: 1}
-  missColor: {r: 0.8235294, g: 0.24705882, b: 0.36402452, a: 1}
+  hitColor: {r: 0, g: 1, b: 0, a: 1}
+  missColor: {r: 1, g: 0, b: 0, a: 1}
 --- !u!4 &665019971
 Transform:
   m_ObjectHideFlags: 0
@@ -1089,14 +1096,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c382664cbf1a7bf41ba5f6a51af9fa81, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
-  gameSpeed: 5
+  baseGameSpeed: 5
+  waves:
+  - waveName: Wave 1
+    monsterCount: 10
+    speedMultiplier: 1
+    spawnInterval: 2
+  - waveName: Wave 2
+    monsterCount: 15
+    speedMultiplier: 1.3
+    spawnInterval: 1.6
   monsterPrefab: {fileID: 1649576280277407282, guid: 21a32323df5dbe744a250af1e6487e28, type: 3}
   spawnPoint: {fileID: 370044540}
-  spawnInterval: 2
-  monstersPerWave: 10
-  totalWavesToWin: 2
-  delayBetweenWaves: 2
-  winPanel: {fileID: 0}
+  secretCharacterPrefab: {fileID: 3780262786638575776, guid: f457fb0e1c9e18d4baa5c3c2b81aac53, type: 3}
+  secretSpawnPoint: {fileID: 1841594710}
 --- !u!4 &704738130
 Transform:
   m_ObjectHideFlags: 0
@@ -1900,7 +1913,7 @@ SpriteRenderer:
   m_Size: {x: 12.8, y: 7.2}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_SpriteSortPoint: 0
   m_BlendShapeWeights: []
 --- !u!4 &1624038660
@@ -2120,6 +2133,37 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
   m_BlendShapeWeights: []
+--- !u!1 &1841594709
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1841594710}
+  m_Layer: 0
+  m_Name: SpawnZenpai
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1841594710
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1841594709}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 6, y: -1.5, z: -5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1860307850
 GameObject:
   m_ObjectHideFlags: 0
@@ -2154,7 +2198,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 44.3}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 597.5, y: -6.8}
+  m_AnchoredPosition: {x: 494, y: -107}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &1860307852
@@ -2396,6 +2440,7 @@ SceneRoots:
   - {fileID: 704738130}
   - {fileID: 8807410001096719943}
   - {fileID: 370044540}
+  - {fileID: 1841594710}
   - {fileID: 665019971}
   - {fileID: 1618573102}
   - {fileID: 79282180}

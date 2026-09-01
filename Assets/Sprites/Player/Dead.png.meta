@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: c640fc3156e8e7e468554570f88d223c
+guid: 403c6e1c7f1c7cc44a3f3f8bf54f8637
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 7405043124127187951
-    second: Night City Background Image 2 Madfireon_0
+      213: 2649847697073447219
+    second: Dead_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -96,17 +96,30 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Night City Background Image 2 Madfireon_0
+      name: Dead_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 1280
-        height: 720
+        x: 382
+        y: 172
+        width: 1172
+        height: 1475
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: fe3cc00ec7ff3c660800000000000000
-      internalID: 7405043124127187951
+      spriteID: 33123f4e07626c420800000000000000
+      internalID: 2649847697073447219
       vertices: []
       indices: 
       edges: []
@@ -135,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Night City Background Image 2 Madfireon_0: 7405043124127187951
+      Dead_0: 2649847697073447219
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

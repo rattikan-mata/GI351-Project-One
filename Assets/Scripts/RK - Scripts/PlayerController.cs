@@ -3,10 +3,16 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    public static PlayerController Instance { get; private set; }
+
     [Header("Hit Settings")]
     [SerializeField] private Transform hitPoint;
     [SerializeField] private float hitRadius = 1.2f;
     [SerializeField] private LayerMask monsterLayer;
+
+    [Header("Health Settings")]
+    [SerializeField] private int maxHealth = 3;
+    private int currentHealth;
 
     [Header("Invincibility Settings")]
     [SerializeField] private float invincibilityDuration = 2f;
@@ -15,31 +21,56 @@ public class PlayerController : MonoBehaviour
     [Header("Components")]
     [SerializeField] private Animator animator;
     [SerializeField] private SpriteRenderer spriteRenderer;
-    [SerializeField] private Sprite deathSprite;
 
-    private bool isDead = false;
+    private Transform cachedTransform;
     private bool isInvincible = false;
-    private int hp = 3;
-
+    private bool isDead = false;
     private bool isDashing = false;
+    private bool isWalkingToSecret = false;
+    private Transform targetSecretChar;
+    private Vector3 originalLocalPos;
+
+    // Cache Animator Hashes ป้องกัน GC และเพิ่มความเร็วแอนิเมชัน
+    private static readonly int HitTrigger = Animator.StringToHash("Hit");
+    private static readonly int DeathTrigger = Animator.StringToHash("Death");
+
+    // Cache Yield Instructions
+    private WaitForSeconds waitFlash;
+    private WaitForSeconds waitDash;
 
     private void Awake()
     {
+        Instance = this;
+        cachedTransform = transform;
         if (animator == null) animator = GetComponent<Animator>();
         if (spriteRenderer == null) spriteRenderer = GetComponent<SpriteRenderer>();
+
+        waitFlash = new WaitForSeconds(flashInterval);
+        waitDash = new WaitForSeconds(0.2f);
     }
 
     private void Start()
     {
+        currentHealth = maxHealth;
+        originalLocalPos = cachedTransform.localPosition;
         if (UIManager.Instance != null)
         {
-            UIManager.Instance.UpdateHearts(hp);
+            UIManager.Instance.UpdateHeartsUI(currentHealth);
         }
     }
 
     private void Update()
     {
         if (isDead) return;
+
+        if (isWalkingToSecret)
+        {
+            if (targetSecretChar != null)
+            {
+                cachedTransform.position = Vector3.MoveTowards(cachedTransform.position, targetSecretChar.position, 3f * Time.deltaTime);
+            }
+            return;
+        }
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
@@ -49,20 +80,14 @@ public class PlayerController : MonoBehaviour
 
     private void PerformHit()
     {
-        Debug.Log("Player Hit");
+        if (animator != null) animator.SetTrigger(HitTrigger);
 
-        if (animator != null)
+        if (!isDashing && !isWalkingToSecret)
         {
-            animator.SetTrigger("Hit");
-        }
-
-        if (!isDashing)
-        {
-            StartCoroutine(QuickDash());
+            StartCoroutine(QuickDashRoutine());
         }
 
         Collider2D hitMonster = Physics2D.OverlapCircle(hitPoint.position, hitRadius, monsterLayer);
-
 
         if (hitMonster != null)
         {
@@ -77,36 +102,33 @@ public class PlayerController : MonoBehaviour
 
     public void TakeDamage()
     {
-        if (isInvincible) return;
+        if (isInvincible || isDead) return;
 
-        hp--;
+        currentHealth--;
+        ScoreManager.Instance.RegisterMiss();
 
-        Debug.Log("HP = " + hp);
-
-        if (UIManager.Instance != null) { UIManager.Instance.UpdateHearts(hp); }
-
-        if (hp <= 0)
+        if (UIManager.Instance != null)
         {
-            Die();
-            return;
+            UIManager.Instance.UpdateHeartsUI(currentHealth);
         }
 
-        ScoreManager.Instance.RegisterMiss();
-        StartCoroutine(InvincibilityRoutine());
+        if (currentHealth <= 0)
+        {
+            Die();
+        }
+        else
+        {
+            StartCoroutine(InvincibilityRoutine());
+        }
     }
 
-    void Die()
+    private void Die()
     {
         isDead = true;
-
-        if (animator != null)
-            animator.enabled = false;
-
-        if (spriteRenderer != null)
-            spriteRenderer.sprite = deathSprite;
-
-        Debug.Log("PLAYER HAS DIED");
+        if (animator != null) animator.SetTrigger(DeathTrigger);
+        GameManager.Instance.TriggerGameOver();
     }
+
     private IEnumerator InvincibilityRoutine()
     {
         isInvincible = true;
@@ -120,7 +142,7 @@ public class PlayerController : MonoBehaviour
                 float alpha = (spriteRenderer.color.a == 1f) ? 0.2f : 1f;
                 spriteRenderer.color = new Color(originalColor.r, originalColor.g, originalColor.b, alpha);
             }
-            yield return new WaitForSeconds(flashInterval);
+            yield return waitFlash;
             elapsed += flashInterval;
         }
 
@@ -130,7 +152,27 @@ public class PlayerController : MonoBehaviour
         }
 
         isInvincible = false;
-        Debug.Log("Normal State");
+    }
+
+    private IEnumerator QuickDashRoutine()
+    {
+        isDashing = true;
+        Vector3 basePos = cachedTransform.localPosition;
+        cachedTransform.localPosition = basePos + (Vector3.right * 1.2f);
+
+        yield return waitDash;
+
+        if (!isWalkingToSecret)
+        {
+            cachedTransform.localPosition = basePos;
+        }
+        isDashing = false;
+    }
+
+    public void StartWalkingToSecret(Transform secretTarget)
+    {
+        isWalkingToSecret = true;
+        targetSecretChar = secretTarget;
     }
 
     private void OnDrawGizmosSelected()
@@ -138,16 +180,5 @@ public class PlayerController : MonoBehaviour
         if (hitPoint == null) return;
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(hitPoint.position, hitRadius);
-    }
-
-    private IEnumerator QuickDash()
-    {
-        isDashing = true; // ล็อคการพุ่ง
-
-        transform.position += Vector3.right * 1.5f;
-        yield return new WaitForSeconds(0.3f);
-        transform.position -= Vector3.right * 1.5f;
-
-        isDashing = false; // ปลดล็อคเมื่อกลับมาที่เดิมแล้ว
     }
 }

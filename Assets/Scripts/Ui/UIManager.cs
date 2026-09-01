@@ -1,68 +1,89 @@
-using System.Collections; 
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using TMPro;
+using System.Collections;
 
 public class UIManager : MonoBehaviour
 {
     public static UIManager Instance { get; private set; }
 
     [Header("UI Hearts")]
-    public Image[] heartImages;
+    [SerializeField] private Image[] heartImages;
 
     [Header("UI Texts")]
-    public TextMeshProUGUI scoreText;
-    public TextMeshProUGUI comboText;
-    public TextMeshProUGUI feedbackText;
+    [SerializeField] private TextMeshProUGUI scoreText;
+    [SerializeField] private TextMeshProUGUI comboText;
+    [SerializeField] private TextMeshProUGUI feedbackText;
 
     [Header("Feedback Settings")]
-    [Tooltip("ระยะเวลา (วินาที) ที่จะให้ข้อความ Hit / Miss ค้างอยู่บนจอ")]
     [SerializeField] private float feedbackDisplayTime = 1f;
-
     private Coroutine feedbackCoroutine;
+    private WaitForSeconds waitFeedback;
+
+    [Header("Panels")]
+    [SerializeField] private GameObject mainMenuPanel;
+    [SerializeField] private GameObject creditPanel;
+    [SerializeField] private GameObject pausePanel;
+    [SerializeField] private GameObject gameOverPanel;
+    [SerializeField] private GameObject gameWinPanel;
+
+    [Header("Result Score Texts")]
+    [SerializeField] private TextMeshProUGUI gameOverScoreText;
+    [SerializeField] private TextMeshProUGUI gameWinScoreText;
+
+    private bool isPaused = false;
+    private static readonly Color HeartDisabledColor = new Color(0.3f, 0.3f, 0.3f, 0.5f);
 
     private void Awake()
     {
         if (Instance == null) Instance = this;
         else Destroy(gameObject);
+
+        waitFeedback = new WaitForSeconds(feedbackDisplayTime);
     }
 
     private void Start()
     {
         if (feedbackText != null) feedbackText.text = "";
-        UpdateScoreAndCombo(0, 0);
+        UpdateScoreUI(0, 0);
     }
 
-    public void UpdateHearts(int currentHP)
+    private void Update()
     {
-        for (int i = 0; i < heartImages.Length; i++)
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
-            if (i < currentHP)
-                heartImages[i].color = Color.white;
-            else
-                heartImages[i].color = new Color(0.3f, 0.3f, 0.3f, 0.5f);
+            if (isPaused) ResumeGame();
+            else PauseGame();
         }
     }
 
-    public void UpdateScoreAndCombo(int score, int combo)
+    public void UpdateHeartsUI(int currentHP)
     {
-        if (scoreText != null) scoreText.text = score.ToString();
+        for (int i = 0; i < heartImages.Length; i++)
+        {
+            heartImages[i].color = (i < currentHP) ? Color.white : HeartDisabledColor;
+        }
+    }
+
+    public void UpdateScoreUI(int score, int combo)
+    {
+        if (scoreText != null) scoreText.SetText("{0}", score);
 
         if (comboText != null)
         {
             if (combo > 0)
             {
-                comboText.gameObject.SetActive(true);
-                comboText.text = combo.ToString();
+                if (!comboText.gameObject.activeSelf) comboText.gameObject.SetActive(true);
+                comboText.SetText("{0}", combo);
             }
             else
             {
-                comboText.gameObject.SetActive(false);
+                if (comboText.gameObject.activeSelf) comboText.gameObject.SetActive(false);
             }
         }
     }
 
-    // ฟังก์ชันโชว์คำว่า Hit / Miss แบบตั้งเวลาหายได้
     public void ShowFeedback(string message, Color color)
     {
         if (feedbackText == null) return;
@@ -70,22 +91,86 @@ public class UIManager : MonoBehaviour
         feedbackText.text = message;
         feedbackText.color = color;
 
-        // ถ้ามี Coroutine เดิมค้างอยู่ ให้หยุดอันเก่าก่อน เพื่อไม่ให้เวลาทับซ้อนกัน
         if (feedbackCoroutine != null)
         {
             StopCoroutine(feedbackCoroutine);
         }
 
-        // เริ่มนับเวลาถอยหลังเพื่อซ่อนข้อความ
         feedbackCoroutine = StartCoroutine(HideFeedbackRoutine());
     }
 
     private IEnumerator HideFeedbackRoutine()
     {
-        yield return new WaitForSeconds(feedbackDisplayTime);
+        yield return waitFeedback;
         if (feedbackText != null)
         {
-            feedbackText.text = ""; // ลบข้อความออกเมื่อหมดเวลา
+            feedbackText.text = "";
+        }
+    }
+
+    public void StartGame()
+    {
+        Time.timeScale = 1f;
+        SceneManager.LoadScene("GameScene");
+    }
+
+    public void OpenCredit()
+    {
+        if (creditPanel != null) creditPanel.SetActive(true);
+    }
+
+    public void CloseCredit()
+    {
+        if (creditPanel != null) creditPanel.SetActive(false);
+    }
+
+    public void QuitGame()
+    {
+        Application.Quit();
+        Debug.Log("[GAME] Quit Game requested.");
+    }
+
+    public void PauseGame()
+    {
+        isPaused = true;
+        Time.timeScale = 0f;
+        if (pausePanel != null) pausePanel.SetActive(true);
+    }
+
+    public void ResumeGame()
+    {
+        isPaused = false;
+        Time.timeScale = 1f;
+        if (pausePanel != null) pausePanel.SetActive(false);
+    }
+
+    public void RestartGame()
+    {
+        Time.timeScale = 1f;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
+    public void GoToMainMenu()
+    {
+        Time.timeScale = 1f;
+        SceneManager.LoadScene("MainMenuScene");
+    }
+
+    public void ShowGameOver()
+    {
+        if (gameOverPanel != null) gameOverPanel.SetActive(true);
+        if (gameOverScoreText != null && ScoreManager.Instance != null)
+        {
+            gameOverScoreText.SetText("Total Score: {0}", ScoreManager.Instance.CurrentScore);
+        }
+    }
+
+    public void ShowGameWin()
+    {
+        if (gameWinPanel != null) gameWinPanel.SetActive(true);
+        if (gameWinScoreText != null && ScoreManager.Instance != null)
+        {
+            gameWinScoreText.SetText("Total Score: {0}", ScoreManager.Instance.CurrentScore);
         }
     }
 }

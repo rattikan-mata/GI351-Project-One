@@ -3,22 +3,28 @@ using UnityEngine;
 [RequireComponent(typeof(SpriteRenderer))]
 public class Background : MonoBehaviour
 {
+    private Transform cachedTransform;
     private float spriteWidth;
+    private float resetThreshold;
+    private float doubleWidth;
 
-    private void Start()
+    private void Awake()
     {
+        cachedTransform = transform;
         SpriteRenderer sr = GetComponent<SpriteRenderer>();
         spriteWidth = sr.bounds.size.x;
+        resetThreshold = -spriteWidth;
+        doubleWidth = spriteWidth * 2f;
     }
 
     private void Update()
     {
         float speed = (GameManager.Instance != null) ? GameManager.Instance.GameSpeed : 5f;
-        transform.position += Vector3.left * (speed * Time.deltaTime);
+        cachedTransform.position += Vector3.left * (speed * Time.deltaTime);
 
-        if (transform.position.x <= -spriteWidth)
+        if (cachedTransform.position.x <= resetThreshold)
         {
-            transform.position += Vector3.right * (spriteWidth * 2f);
+            cachedTransform.position += Vector3.right * doubleWidth;
         }
     }
 }

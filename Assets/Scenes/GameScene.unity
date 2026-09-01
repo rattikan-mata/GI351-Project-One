@@ -1096,16 +1096,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c382664cbf1a7bf41ba5f6a51af9fa81, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
-  baseGameSpeed: 5
+  baseGameSpeed: 6
   waves:
   - waveName: Wave 1
     monsterCount: 10
     speedMultiplier: 1
     spawnInterval: 2
-  - waveName: Wave 2
-    monsterCount: 15
-    speedMultiplier: 1.3
-    spawnInterval: 1.6
   monsterPrefab: {fileID: 1649576280277407282, guid: 21a32323df5dbe744a250af1e6487e28, type: 3}
   spawnPoint: {fileID: 370044540}
   secretCharacterPrefab: {fileID: 3780262786638575776, guid: f457fb0e1c9e18d4baa5c3c2b81aac53, type: 3}

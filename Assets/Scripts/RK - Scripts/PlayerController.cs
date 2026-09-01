@@ -20,6 +20,9 @@ public class PlayerController : MonoBehaviour
     private bool isDead = false;
     private bool isInvincible = false;
     private int hp = 3;
+
+    private bool isDashing = false;
+
     private void Awake()
     {
         if (animator == null) animator = GetComponent<Animator>();
@@ -53,7 +56,13 @@ public class PlayerController : MonoBehaviour
             animator.SetTrigger("Hit");
         }
 
+        if (!isDashing)
+        {
+            StartCoroutine(QuickDash());
+        }
+
         Collider2D hitMonster = Physics2D.OverlapCircle(hitPoint.position, hitRadius, monsterLayer);
+
 
         if (hitMonster != null)
         {
@@ -129,5 +138,16 @@ public class PlayerController : MonoBehaviour
         if (hitPoint == null) return;
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(hitPoint.position, hitRadius);
+    }
+
+    private IEnumerator QuickDash()
+    {
+        isDashing = true; // ล็อคการพุ่ง
+
+        transform.position += Vector3.right * 1.5f;
+        yield return new WaitForSeconds(0.3f);
+        transform.position -= Vector3.right * 1.5f;
+
+        isDashing = false; // ปลดล็อคเมื่อกลับมาที่เดิมแล้ว
     }
 }

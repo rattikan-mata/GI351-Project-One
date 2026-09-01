@@ -263,7 +263,7 @@ MonoBehaviour:
   - {fileID: 661458656}
   - {fileID: 1661549711}
   - {fileID: 1222703913}
-  fullHeartSprite: {fileID: 0}
+  fullHeartSprite: {fileID: 4606908045521496030, guid: 7704d1be4d407b54caa8370a03964eec, type: 3}
   emptyHeartSprite: {fileID: 0}
 --- !u!114 &79282177
 MonoBehaviour:

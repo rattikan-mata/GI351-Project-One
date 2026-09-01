@@ -29,12 +29,24 @@ public class ScoreManager : MonoBehaviour
         Score += 100;
         CurrentCombo++;
         Debug.Log("COMBO = " + CurrentCombo + " | SCORE = " + Score);
+
+        if (UIManager.Instance != null)
+        {
+            UIManager.Instance.UpdateScoreAndCombo(Score, CurrentCombo);
+            UIManager.Instance.ShowFeedback("Hit!", Color.green);
+        }
     }
 
     public void RegisterMiss()
     {
         CurrentCombo = 0;
         Debug.Log("MISS!");
+
+        if (UIManager.Instance != null)
+        {
+            UIManager.Instance.UpdateScoreAndCombo(Score, CurrentCombo);
+            UIManager.Instance.ShowFeedback("Miss!", Color.red);
+        }
     }
 
     public void ResetAll()

@@ -1,20 +1,18 @@
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
+using TMPro; 
 
 public class UIManager : MonoBehaviour
 {
     public static UIManager Instance { get; private set; }
 
-    [Header("UI Texts")]
-    [SerializeField] private TextMeshProUGUI scoreText;
-    [SerializeField] private TextMeshProUGUI comboText;
-    [SerializeField] private TextMeshProUGUI feedbackText;
-
     [Header("UI Hearts")]
-    [SerializeField] private Image[] heartImages;
-    [SerializeField] private Sprite fullHeartSprite;
-    [SerializeField] private Sprite emptyHeartSprite;
+    public Image[] heartImages;
+
+    [Header("UI Texts")]
+    public TextMeshProUGUI scoreText;
+    public TextMeshProUGUI comboText;
+    public TextMeshProUGUI feedbackText; // สำหรับโชว์คำว่า Hit! หรือ Miss!
 
     private void Awake()
     {
@@ -24,42 +22,36 @@ public class UIManager : MonoBehaviour
 
     private void Start()
     {
+        // เคลียร์ข้อความตอนเริ่มเกม
         if (feedbackText != null) feedbackText.text = "";
+        UpdateScoreAndCombo(0, 0);
     }
 
+    // ฟังก์ชันอัปเดตหัวใจ 
+    public void UpdateHearts(int currentHP)
+    {
+        for (int i = 0; i < heartImages.Length; i++)
+        {
+            if (i < currentHP)
+                heartImages[i].color = Color.white;
+            else
+                heartImages[i].color = new Color(0.3f, 0.3f, 0.3f, 0.5f);
+        }
+    }
+
+    
     public void UpdateScoreAndCombo(int score, int combo)
     {
         if (scoreText != null) scoreText.text = "Score: " + score;
         if (comboText != null) comboText.text = "Combo: " + combo;
     }
 
-    public void ShowFeedback(string message)
+    public void ShowFeedback(string message, Color color)
     {
-        if (feedbackText != null) feedbackText.text = message;
-    }
-
-    public void UpdateHearts(int currentHP)
-    {
-        for (int i = 0; i < heartImages.Length; i++)
+        if (feedbackText != null)
         {
-            if (i < currentHP)
-            {
-                heartImages[i].sprite = fullHeartSprite;
-                heartImages[i].color = Color.white; // สีปกติ
-            }
-            else
-            {
-                if (emptyHeartSprite != null)
-                {
-                    heartImages[i].sprite = emptyHeartSprite;
-                    heartImages[i].color = Color.white;
-                }
-                else
-                {
-                    // ถ้ายังไม่มีรูปหัวใจเปล่า ให้ปรับสีหัวใจเดิมให้มืดและโปร่งใสแทน
-                    heartImages[i].color = new Color(0.3f, 0.3f, 0.3f, 0.5f);
-                }
-            }
+            feedbackText.text = message;
+            feedbackText.color = color; // เปลี่ยนสีข้อความได้ด้วย
         }
     }
 }

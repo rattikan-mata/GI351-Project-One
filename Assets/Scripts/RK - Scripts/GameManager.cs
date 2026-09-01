@@ -104,6 +104,9 @@ public class GameManager : MonoBehaviour
     private void TriggerSecretCharacterSpawn()
     {
         Debug.Log("[ALL WAVES CLEARED] Spawning Secret Character...");
+
+        GameSpeed = 0f; //หยุดฉากหลังทันทีที่ประตูโผล่มา
+
         if (secretCharacterPrefab != null && secretSpawnPoint != null)
         {
             GameObject secretChar = Instantiate(secretCharacterPrefab, secretSpawnPoint.position, Quaternion.identity);
@@ -116,6 +119,7 @@ public class GameManager : MonoBehaviour
 
     public void TriggerGameOver()
     {
+        GameSpeed = 0f; // <--- หยุดฉากหลังทันทีที่ผู้เล่นตาย เพื่อให้ตอนตัวละครไม่เคลื่อนที่ไม่แปลกตา
         StartCoroutine(GameOverDelayRoutine());
     }
 
@@ -131,6 +135,7 @@ public class GameManager : MonoBehaviour
 
     public void TriggerGameWin()
     {
+        GameSpeed = 0f; // หยุดฉากหลังทันทีที่ชนะเกม เพื่อให้ตัวละครวิ่งไปหาประตูไม่ขัดตา
         Time.timeScale = 0f;
         if (UIManager.Instance != null)
         {

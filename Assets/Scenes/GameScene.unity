@@ -159,6 +159,7 @@ MonoBehaviour:
   comboText: {fileID: 563385543}
   feedbackText: {fileID: 1860307852}
   feedbackDisplayTime: 0.7
+  comboContainer: {fileID: 1341578098}
   mainMenuPanel: {fileID: 0}
   creditPanel: {fileID: 0}
   pausePanel: {fileID: 0}
@@ -1552,7 +1553,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1609099667}
   - component: {fileID: 1609099669}
-  - component: {fileID: 1609099668}
+  - component: {fileID: 1609099670}
   m_Layer: 0
   m_Name: BG1_0
   m_TagString: Untagged
@@ -1575,23 +1576,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1618573102}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1609099668
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1609099666}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9e676f70f305f144da53397918013d51, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ParallaxBackground
-  scrollSpeed: 2
-  pieces: []
-  autoCopyCount: 2
-  referenceCamera: {fileID: 0}
-  recycleMargin: 1
 --- !u!212 &1609099669
 SpriteRenderer:
   serializedVersion: 3
@@ -1652,6 +1636,18 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
   m_BlendShapeWeights: []
+--- !u!114 &1609099670
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1609099666}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 066b94c8d9e25804987bed5c6eb556f5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Background
 --- !u!1 &1618156290
 GameObject:
   m_ObjectHideFlags: 0
@@ -1737,7 +1733,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1618573102}
   - component: {fileID: 1618573104}
-  - component: {fileID: 1618573103}
   m_Layer: 0
   m_Name: BG
   m_TagString: Untagged
@@ -1762,18 +1757,6 @@ Transform:
   - {fileID: 1682295093}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1618573103
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1618573101}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 066b94c8d9e25804987bed5c6eb556f5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Background
 --- !u!212 &1618573104
 SpriteRenderer:
   serializedVersion: 3
@@ -2029,7 +2012,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1682295093}
   - component: {fileID: 1682295095}
-  - component: {fileID: 1682295094}
+  - component: {fileID: 1682295096}
   m_Layer: 0
   m_Name: BG1_0 (1)
   m_TagString: Untagged
@@ -2052,23 +2035,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1618573102}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1682295094
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1682295092}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9e676f70f305f144da53397918013d51, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ParallaxBackground
-  scrollSpeed: 2
-  pieces: []
-  autoCopyCount: 2
-  referenceCamera: {fileID: 0}
-  recycleMargin: 1
 --- !u!212 &1682295095
 SpriteRenderer:
   serializedVersion: 3
@@ -2129,6 +2095,18 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
   m_BlendShapeWeights: []
+--- !u!114 &1682295096
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1682295092}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 066b94c8d9e25804987bed5c6eb556f5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Background
 --- !u!1 &1841594709
 GameObject:
   m_ObjectHideFlags: 0
@@ -2434,10 +2412,10 @@ SceneRoots:
   - {fileID: 619394802}
   - {fileID: 1624038660}
   - {fileID: 704738130}
-  - {fileID: 8807410001096719943}
   - {fileID: 370044540}
   - {fileID: 1841594710}
   - {fileID: 665019971}
   - {fileID: 1618573102}
   - {fileID: 79282180}
   - {fileID: 1330736689}
+  - {fileID: 8807410001096719943}

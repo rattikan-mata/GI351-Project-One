@@ -26,6 +26,14 @@ public class PlayerController : MonoBehaviour
         if (spriteRenderer == null) spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
+    private void Start()
+    {
+        if (UIManager.Instance != null)
+        {
+            UIManager.Instance.UpdateHearts(hp);
+        }
+    }
+
     private void Update()
     {
         if (isDead) return;
@@ -65,6 +73,8 @@ public class PlayerController : MonoBehaviour
         hp--;
 
         Debug.Log("HP = " + hp);
+
+        if (UIManager.Instance != null) { UIManager.Instance.UpdateHearts(hp); }
 
         if (hp <= 0)
         {

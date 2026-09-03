@@ -2,64 +2,50 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[System.Serializable]
+/*[System.Serializable]
 public class WaveData
 {
     public string waveName;
     public int monsterCount;
     public float speedMultiplier = 1f;
     public float spawnInterval = 2f;
-    public float delayBeforeNextWave = 2f;
 }
 
 public class GameManager : MonoBehaviour
 {
-    #region Singleton
-    // ทำให้ GameManager มีตัวเดียวในซีน
-
     public static GameManager Instance { get; private set; }
-
-    private void Awake()
-    {
-        if (Instance == null) Instance = this;
-        else Destroy(gameObject);
-    }
-
-    #endregion
-
-    #region Game Speed
-    // ความเร็วรวมของฉากเเละเกม ตอนนี้ (เอามาจาก baseGameSpeed x speedMultiplier ของเวฟปัจจุบัน)
 
     [Header("Game Speed")]
     [SerializeField] private float baseGameSpeed = 5f;
     public float GameSpeed { get; private set; }
 
-    #endregion
-
-    #region Wave Configuration (Inspector Fields)
-    // ตั้งค่าเวฟทั้งหมดตรงนี้ผ่าน Inspector: จำนวนเวฟ, มอนต่อเวฟ, ความเร็ว, ความถี่เกิด, ดีเลย์ก่อนเวฟถัดไป
-
     [Header("Wave Configuration")]
     [SerializeField]
     private List<WaveData> waves = new List<WaveData>
     {
-        new WaveData { waveName = "Wave 1", monsterCount = 10, speedMultiplier = 1f, spawnInterval = 2f, delayBeforeNextWave = 3f },
+        new WaveData { waveName = "Wave 1", monsterCount = 10, speedMultiplier = 1f, spawnInterval = 2f },
+        new WaveData { waveName = "Wave 2", monsterCount = 15, speedMultiplier = 1.3f, spawnInterval = 1.6f }
     };
 
     [Header("Spawner References")]
     [SerializeField] private GameObject monsterPrefab;
     [SerializeField] private Transform spawnPoint;
 
+    [Header("Secret Character (Win Condition)")]
+    [SerializeField] private GameObject secretCharacterPrefab;
+    [SerializeField] private Transform secretSpawnPoint;
+
     private int currentWaveIndex = 0;
     private int monstersRemainingToSpawn = 0;
     private int activeMonstersInScene = 0;
     private bool isSpawning = false;
+    private readonly WaitForSeconds waitGameOver = new WaitForSeconds(1.5f);
 
-    #endregion
-
-    #region Wave System (Logic)
-    // ตัวควบคุมการเล่นเวฟจริงๆ: เริ่มเวฟ, ทยอย spawn มอนตามความถี่ที่ตั้ง,
-    // เช็คว่าเวฟนี้เคลียร์หมดหรือยัง แล้วหน่วงเวลาก่อนขึ้นเวฟถัดไปอัตโนมัติ
+    private void Awake()
+    {
+        if (Instance == null) Instance = this;
+        else Destroy(gameObject);
+    }
 
     private void Start()
     {
@@ -102,47 +88,17 @@ public class GameManager : MonoBehaviour
 
         if (!isSpawning && monstersRemainingToSpawn <= 0 && activeMonstersInScene <= 0)
         {
-            // ใช้ delayBeforeNextWave ของเวฟที่เพิ่งจบ เป็นตัวหน่วงก่อนขึ้นเวฟถัดไป
-            float delay = waves[currentWaveIndex].delayBeforeNextWave;
             currentWaveIndex++;
 
             if (currentWaveIndex < waves.Count)
             {
-                StartCoroutine(NextWaveAfterDelayRoutine(delay));
+                StartNextWave();
             }
             else
             {
-                StartCoroutine(SecretCharacterAfterDelayRoutine(delay));
+                TriggerSecretCharacterSpawn();
             }
         }
-    }
-
-    private IEnumerator NextWaveAfterDelayRoutine(float delay)
-    {
-        if (delay > 0f)
-        {
-            yield return new WaitForSeconds(delay);
-        }
-        StartNextWave();
-    }
-
-    #endregion
-
-    #region Secret Character (Win Condition)
-    // ทำงานตอนเคลียร์เวฟสุดท้ายครบแล้ว: หยุด GameSpeed, spawn ตัวละครลับขึ้นมา
-    // แล้วสั่งให้ PlayerController เดินเข้าไปหา (เงื่อนไขชนะเกม)
-
-    [Header("Secret Character (Win Condition)")]
-    [SerializeField] private GameObject secretCharacterPrefab;
-    [SerializeField] private Transform secretSpawnPoint;
-
-    private IEnumerator SecretCharacterAfterDelayRoutine(float delay)
-    {
-        if (delay > 0f)
-        {
-            yield return new WaitForSeconds(delay);
-        }
-        TriggerSecretCharacterSpawn();
     }
 
     private void TriggerSecretCharacterSpawn()
@@ -160,14 +116,6 @@ public class GameManager : MonoBehaviour
             }
         }
     }
-
-    #endregion
-
-    #region Game Over / Game Win
-    // เรียกจากภายนอก (เช่น PlayerController ตอนโดนมอนชน) เพื่อจบเกมแบบแพ้หรือชนะ
-    // หยุด GameSpeed ทันที แล้วรอสักครู่/หยุดเวลาเกม ก่อนเปิด UI ผลลัพธ์ผ่าน UIManager
-
-    private readonly WaitForSeconds waitGameOver = new WaitForSeconds(1.5f);
 
     public void TriggerGameOver()
     {
@@ -194,6 +142,4 @@ public class GameManager : MonoBehaviour
             UIManager.Instance.ShowGameWin();
         }
     }
-
-    #endregion
-}
+}*/

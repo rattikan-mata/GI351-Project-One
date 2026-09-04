@@ -7,9 +7,15 @@ public class WaveData
 {
     public string waveName;
     public int monsterCount;
-    public float speedMultiplier = 1f;
-    public float spawnInterval = 2f;
-    public float delayBeforeNextWave = 2f;
+
+    [InspectorName("BG Speed")]
+    public float bgSpeedMultiplier = 1f;// ตัว x ความเร็วฉากหลัง
+
+    public float monsterSpeedMultiplier = 1f; //ตัว x ความเร็วมอน 
+
+    public float secPerMonster = 2f; //ความถี่เกิดมอน (วินาทีต่อมอน)
+
+    public float delayBeforeNextWave = 2f; // ดีเลย์ก่อนเวฟถัดไป (วินาที) หลังจาก spawn มอนครบแล้ว
 }
 
 public class GameManager : MonoBehaviour
@@ -28,11 +34,17 @@ public class GameManager : MonoBehaviour
     #endregion
 
     #region Game Speed
-    // ความเร็วรวมของฉากเเละเกม ตอนนี้ (เอามาจาก baseGameSpeed x speedMultiplier ของเวฟปัจจุบัน)
+    // แยกความเร็วออกเป็น 2 ส่วน
+    // - GameSpeed (BG)  : ใช้คุมความเร็วฉากหลัง ) -> อ่านโดย Background.cs
+    // - MonsterSpeed    : ใช้คุมความเร็วมอน-> อ่านโดย Monster.cs
 
-    [Header("Game Speed")]
-    [SerializeField] private float baseGameSpeed = 5f;
+    [Header("Background Speed")]
+    [SerializeField] private float baseBackgroundSpeed = 5f;
     public float GameSpeed { get; private set; }
+
+    [Header("Monster Speed")]
+    [SerializeField] private float baseMonsterSpeed = 5f;
+    public float MonsterSpeed { get; private set; }
 
     #endregion
 
@@ -43,7 +55,7 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private List<WaveData> waves = new List<WaveData>
     {
-        new WaveData { waveName = "Wave 1", monsterCount = 10, speedMultiplier = 1f, spawnInterval = 2f, delayBeforeNextWave = 3f },
+        new WaveData { waveName = "Wave 1", monsterCount = 10, bgSpeedMultiplier = 1f, monsterSpeedMultiplier = 1f, secPerMonster = 2f, delayBeforeNextWave = 3f },
     };
 
     [Header("Spawner References")]
@@ -63,7 +75,8 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        GameSpeed = baseGameSpeed;
+        GameSpeed = baseBackgroundSpeed;
+        MonsterSpeed = baseMonsterSpeed;
         StartNextWave();
     }
 
@@ -72,7 +85,8 @@ public class GameManager : MonoBehaviour
         if (currentWaveIndex < waves.Count)
         {
             WaveData wave = waves[currentWaveIndex];
-            GameSpeed = baseGameSpeed * wave.speedMultiplier;
+            GameSpeed = baseBackgroundSpeed * wave.bgSpeedMultiplier;
+            MonsterSpeed = baseMonsterSpeed * wave.monsterSpeedMultiplier;
             monstersRemainingToSpawn = wave.monsterCount;
             StartCoroutine(SpawnWaveRoutine(wave));
         }
@@ -81,7 +95,7 @@ public class GameManager : MonoBehaviour
     private IEnumerator SpawnWaveRoutine(WaveData wave)
     {
         isSpawning = true;
-        WaitForSeconds waitInterval = new WaitForSeconds(wave.spawnInterval);
+        WaitForSeconds waitInterval = new WaitForSeconds(wave.secPerMonster);
 
         while (monstersRemainingToSpawn > 0)
         {
@@ -129,7 +143,7 @@ public class GameManager : MonoBehaviour
     #endregion
 
     #region Secret Character (Win Condition)
-    // ทำงานตอนเคลียร์เวฟสุดท้ายครบแล้ว: หยุด GameSpeed, spawn ตัวละครลับขึ้นมา
+    // ทำงานตอนเคลียร์เวฟสุดท้ายครบแล้ว: หยุด GameSpeed/MonsterSpeed, spawn ตัวละครลับขึ้นมา
     // แล้วสั่งให้ PlayerController เดินเข้าไปหา (เงื่อนไขชนะเกม)
 
     [Header("Secret Character (Win Condition)")]
@@ -149,7 +163,8 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("[ALL WAVES CLEARED] Spawning Secret Character...");
 
-        GameSpeed = 0f; //หยุดฉากหลังทันทีที่ประตูโผล่มา
+        GameSpeed = 0f;     // หยุดฉากหลังทันทีที่ประตูโผล่มา
+        MonsterSpeed = 0f;  // หยุดมอนที่เหลือ (ถ้ามี) ด้วยเช่นกัน
 
         if (secretCharacterPrefab != null && secretSpawnPoint != null)
         {
@@ -165,13 +180,14 @@ public class GameManager : MonoBehaviour
 
     #region Game Over / Game Win
     // เรียกจากภายนอก (เช่น PlayerController ตอนโดนมอนชน) เพื่อจบเกมแบบแพ้หรือชนะ
-    // หยุด GameSpeed ทันที แล้วรอสักครู่/หยุดเวลาเกม ก่อนเปิด UI ผลลัพธ์ผ่าน UIManager
+    // หยุด GameSpeed/MonsterSpeed ทันที แล้วรอสักครู่/หยุดเวลาเกม ก่อนเปิด UI ผลลัพธ์ผ่าน UIManager
 
     private readonly WaitForSeconds waitGameOver = new WaitForSeconds(1.5f);
 
     public void TriggerGameOver()
     {
-        GameSpeed = 0f; // <--- หยุดฉากหลังทันทีที่ผู้เล่นตาย เพื่อให้ตอนตัวละครไม่เคลื่อนที่ไม่แปลกตา
+        GameSpeed = 0f;     // <--- หยุดฉากหลังทันทีที่ผู้เล่นตาย
+        MonsterSpeed = 0f;  // หยุดมอน
         StartCoroutine(GameOverDelayRoutine());
     }
 
@@ -187,7 +203,8 @@ public class GameManager : MonoBehaviour
 
     public void TriggerGameWin()
     {
-        GameSpeed = 0f; // หยุดฉากหลังทันทีที่ชนะเกม เพื่อให้ตัวละครวิ่งไปหาประตู
+        GameSpeed = 0f;     // หยุดฉากหลังทันทีที่ชนะเกม 
+        MonsterSpeed = 0f;  // หยุดมอน
         Time.timeScale = 0f;
         if (UIManager.Instance != null)
         {

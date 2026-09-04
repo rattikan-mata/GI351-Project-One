@@ -7,6 +7,10 @@ public class PlayerController : MonoBehaviour
 
     [Header("Hit Settings")]
     [SerializeField] private Transform hitPoint;
+
+    // เพิ่มบรรทัดนี้เพื่อให้ Monster.cs ดึงตำแหน่งไปใช้วัดระยะวงแหวนหดได้
+    public Transform HitZone => hitPoint;
+
     [SerializeField] private float hitRadius = 1.2f;
     [SerializeField] private LayerMask monsterLayer;
 
@@ -23,7 +27,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private SpriteRenderer spriteRenderer;
 
     [Header("Secret Win Settings")]
-    [SerializeField] private float walkSpeed = 3f; 
+    [SerializeField] private float walkSpeed = 3f;
 
     private Transform cachedTransform;
     private bool isInvincible = false;

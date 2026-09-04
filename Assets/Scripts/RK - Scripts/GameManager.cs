@@ -8,14 +8,14 @@ public class WaveData
     public string waveName;
     public int monsterCount;
 
-    [InspectorName("BG Speed")]
-    public float bgSpeedMultiplier = 1f; // ตัว x ความเร็วฉากหลังของเวฟนี้
+    [InspectorName("BG Speed Multiplier")]
+    public float bgSpeedMultiplier = 1f;
 
-    public float monsterSpeedMultiplier = 1f; // ตัว x ความเร็วมอนของเวฟนี้
+    [InspectorName("Monster Speed Multiplier")]
+    public float monsterSpeedMultiplier = 1f;
 
-    public float secPerMonster = 2f; // ความถี่เกิดมอน (วินาทีต่อมอน)
-
-    public float delayBeforeNextWave = 2f; // ดีเลย์ก่อนเวฟถัดไป (วินาที)
+    public float secPerMonster = 2f;
+    public float delayBeforeNextWave = 2f;
 }
 
 public class GameManager : MonoBehaviour
@@ -39,24 +39,22 @@ public class GameManager : MonoBehaviour
     [SerializeField] private float baseMonsterSpeed = 5f;
     public float MonsterSpeed { get; private set; }
 
-    // ความเร็วพื้นฐานของ Wave ปัจจุบัน (ก่อนคูณ Rage)
-    private float currentWaveBgSpeed;
-    private float currentWaveMonsterSpeed;
+    // เก็บตัวคูณของ Wave ปัจจุบัน
+    private float currentWaveBgMult = 1f;
+    private float currentWaveMonsterMult = 1f;
 
-    // สถานะจบเกมเพื่อสั่งหยุดทุกอย่าง
     private bool isGameHalted = false;
     #endregion
 
-    #region Rage Integration (Effects on Speed)
-    // ตัวคูณที่ได้รับมาจาก ScoreManager ตาม Rage Phase ปัจจุบัน
-    private float rageBgMultiplier = 1f;
-    private float rageMonsterMultiplier = 1f;
+    #region Rage Integration (Additive Speed)
+    // ค่า Bonus ที่บวกเพิ่มมาจาก ScoreManager (ค่าเริ่มต้น = 0)
+    private float rageBgBonus = 0f;
+    private float rageMonsterBonus = 0f;
 
-    // ฟังก์ชันนี้ถูกเรียกโดย ScoreManager เวลามีการเปลี่ยน Rage Phase
-    public void UpdateRageMultipliers(float bgMultiplier, float monsterMultiplier)
+    public void UpdateRageBonus(float bgBonus, float monsterBonus)
     {
-        rageBgMultiplier = bgMultiplier;
-        rageMonsterMultiplier = monsterMultiplier;
+        rageBgBonus = bgBonus;
+        rageMonsterBonus = monsterBonus;
         CalculateFinalSpeeds();
     }
 
@@ -69,14 +67,17 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            // ความเร็วสุดท้าย = (ความเร็ว Base * ตัวคูณของ Wave) * ตัวคูณจาก Rage Phase
-            GameSpeed = currentWaveBgSpeed * rageBgMultiplier;
-            MonsterSpeed = currentWaveMonsterSpeed * rageMonsterMultiplier;
+            // สูตร: นำ (ตัวคูณ Wave + ตัวบวก Rage) ค่อยเอาไปคูณ Base Speed
+            float finalBgMult = currentWaveBgMult + rageBgBonus;
+            float finalMonsterMult = currentWaveMonsterMult + rageMonsterBonus;
+
+            GameSpeed = baseBackgroundSpeed * finalBgMult;
+            MonsterSpeed = baseMonsterSpeed * finalMonsterMult;
         }
     }
     #endregion
 
-    #region Wave Configuration (Inspector Fields)
+    #region Wave Configuration
     [Header("Wave Configuration")]
     [SerializeField]
     private List<WaveData> waves = new List<WaveData>
@@ -97,8 +98,8 @@ public class GameManager : MonoBehaviour
     #region Wave System (Logic)
     private void Start()
     {
-        currentWaveBgSpeed = baseBackgroundSpeed;
-        currentWaveMonsterSpeed = baseMonsterSpeed;
+        currentWaveBgMult = 1f;
+        currentWaveMonsterMult = 1f;
         CalculateFinalSpeeds();
 
         StartNextWave();
@@ -110,10 +111,11 @@ public class GameManager : MonoBehaviour
         {
             WaveData wave = waves[currentWaveIndex];
 
-            // เก็บความเร็วของเวฟนั้นๆ เป็น Base
-            currentWaveBgSpeed = baseBackgroundSpeed * wave.bgSpeedMultiplier;
-            currentWaveMonsterSpeed = baseMonsterSpeed * wave.monsterSpeedMultiplier;
-            CalculateFinalSpeeds(); // คำนวณร่วมกับระบบ Rage ทันที
+            // ดึงค่า Multiplier จาก Wave
+            currentWaveBgMult = wave.bgSpeedMultiplier;
+            currentWaveMonsterMult = wave.monsterSpeedMultiplier;
+
+            CalculateFinalSpeeds(); // รวมค่าตัวคูณ Wave กับ Rage Bonus
 
             monstersRemainingToSpawn = wave.monsterCount;
             StartCoroutine(SpawnWaveRoutine(wave));
@@ -186,8 +188,8 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("[ALL WAVES CLEARED] Spawning Secret Character...");
 
-        isGameHalted = true;     // หยุดระบบความเร็วทั้งหมด
-        CalculateFinalSpeeds();  // บังคับให้สปีดกลายเป็น 0 ทันที
+        isGameHalted = true;
+        CalculateFinalSpeeds();
 
         if (secretCharacterPrefab != null && secretSpawnPoint != null)
         {
@@ -205,7 +207,7 @@ public class GameManager : MonoBehaviour
 
     public void TriggerGameOver()
     {
-        isGameHalted = true;    // หยุดผู้เล่นตาย
+        isGameHalted = true;
         CalculateFinalSpeeds();
         StartCoroutine(GameOverDelayRoutine());
     }
@@ -222,7 +224,7 @@ public class GameManager : MonoBehaviour
 
     public void TriggerGameWin()
     {
-        isGameHalted = true;    // หยุดเมื่อชนะเกม
+        isGameHalted = true;
         CalculateFinalSpeeds();
         Time.timeScale = 0f;
         if (UIManager.Instance != null)

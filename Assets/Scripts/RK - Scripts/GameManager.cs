@@ -9,20 +9,18 @@ public class WaveData
     public int monsterCount;
 
     [InspectorName("BG Speed")]
-    public float bgSpeedMultiplier = 1f;// ตัว x ความเร็วฉากหลัง
+    public float bgSpeedMultiplier = 1f; // ตัว x ความเร็วฉากหลังของเวฟนี้
 
-    public float monsterSpeedMultiplier = 1f; //ตัว x ความเร็วมอน 
+    public float monsterSpeedMultiplier = 1f; // ตัว x ความเร็วมอนของเวฟนี้
 
-    public float secPerMonster = 2f; //ความถี่เกิดมอน (วินาทีต่อมอน)
+    public float secPerMonster = 2f; // ความถี่เกิดมอน (วินาทีต่อมอน)
 
-    public float delayBeforeNextWave = 2f; // ดีเลย์ก่อนเวฟถัดไป (วินาที) หลังจาก spawn มอนครบแล้ว
+    public float delayBeforeNextWave = 2f; // ดีเลย์ก่อนเวฟถัดไป (วินาที)
 }
 
 public class GameManager : MonoBehaviour
 {
     #region Singleton
-    // ทำให้ GameManager มีตัวเดียวในซีน
-
     public static GameManager Instance { get; private set; }
 
     private void Awake()
@@ -30,14 +28,9 @@ public class GameManager : MonoBehaviour
         if (Instance == null) Instance = this;
         else Destroy(gameObject);
     }
-
     #endregion
 
-    #region Game Speed
-    // แยกความเร็วออกเป็น 2 ส่วน
-    // - GameSpeed (BG)  : ใช้คุมความเร็วฉากหลัง ) -> อ่านโดย Background.cs
-    // - MonsterSpeed    : ใช้คุมความเร็วมอน-> อ่านโดย Monster.cs
-
+    #region Game Speed (Base)
     [Header("Background Speed")]
     [SerializeField] private float baseBackgroundSpeed = 5f;
     public float GameSpeed { get; private set; }
@@ -46,11 +39,44 @@ public class GameManager : MonoBehaviour
     [SerializeField] private float baseMonsterSpeed = 5f;
     public float MonsterSpeed { get; private set; }
 
+    // ความเร็วพื้นฐานของ Wave ปัจจุบัน (ก่อนคูณ Rage)
+    private float currentWaveBgSpeed;
+    private float currentWaveMonsterSpeed;
+
+    // สถานะจบเกมเพื่อสั่งหยุดทุกอย่าง
+    private bool isGameHalted = false;
+    #endregion
+
+    #region Rage Integration (Effects on Speed)
+    // ตัวคูณที่ได้รับมาจาก ScoreManager ตาม Rage Phase ปัจจุบัน
+    private float rageBgMultiplier = 1f;
+    private float rageMonsterMultiplier = 1f;
+
+    // ฟังก์ชันนี้ถูกเรียกโดย ScoreManager เวลามีการเปลี่ยน Rage Phase
+    public void UpdateRageMultipliers(float bgMultiplier, float monsterMultiplier)
+    {
+        rageBgMultiplier = bgMultiplier;
+        rageMonsterMultiplier = monsterMultiplier;
+        CalculateFinalSpeeds();
+    }
+
+    private void CalculateFinalSpeeds()
+    {
+        if (isGameHalted)
+        {
+            GameSpeed = 0f;
+            MonsterSpeed = 0f;
+        }
+        else
+        {
+            // ความเร็วสุดท้าย = (ความเร็ว Base * ตัวคูณของ Wave) * ตัวคูณจาก Rage Phase
+            GameSpeed = currentWaveBgSpeed * rageBgMultiplier;
+            MonsterSpeed = currentWaveMonsterSpeed * rageMonsterMultiplier;
+        }
+    }
     #endregion
 
     #region Wave Configuration (Inspector Fields)
-    // ตั้งค่าเวฟทั้งหมดตรงนี้ผ่าน Inspector: จำนวนเวฟ, มอนต่อเวฟ, ความเร็ว, ความถี่เกิด, ดีเลย์ก่อนเวฟถัดไป
-
     [Header("Wave Configuration")]
     [SerializeField]
     private List<WaveData> waves = new List<WaveData>
@@ -66,17 +92,15 @@ public class GameManager : MonoBehaviour
     private int monstersRemainingToSpawn = 0;
     private int activeMonstersInScene = 0;
     private bool isSpawning = false;
-
     #endregion
 
     #region Wave System (Logic)
-    // ตัวควบคุมการเล่นเวฟจริงๆ: เริ่มเวฟ, ทยอย spawn มอนตามความถี่ที่ตั้ง,
-    // เช็คว่าเวฟนี้เคลียร์หมดหรือยัง แล้วหน่วงเวลาก่อนขึ้นเวฟถัดไปอัตโนมัติ
-
     private void Start()
     {
-        GameSpeed = baseBackgroundSpeed;
-        MonsterSpeed = baseMonsterSpeed;
+        currentWaveBgSpeed = baseBackgroundSpeed;
+        currentWaveMonsterSpeed = baseMonsterSpeed;
+        CalculateFinalSpeeds();
+
         StartNextWave();
     }
 
@@ -85,8 +109,12 @@ public class GameManager : MonoBehaviour
         if (currentWaveIndex < waves.Count)
         {
             WaveData wave = waves[currentWaveIndex];
-            GameSpeed = baseBackgroundSpeed * wave.bgSpeedMultiplier;
-            MonsterSpeed = baseMonsterSpeed * wave.monsterSpeedMultiplier;
+
+            // เก็บความเร็วของเวฟนั้นๆ เป็น Base
+            currentWaveBgSpeed = baseBackgroundSpeed * wave.bgSpeedMultiplier;
+            currentWaveMonsterSpeed = baseMonsterSpeed * wave.monsterSpeedMultiplier;
+            CalculateFinalSpeeds(); // คำนวณร่วมกับระบบ Rage ทันที
+
             monstersRemainingToSpawn = wave.monsterCount;
             StartCoroutine(SpawnWaveRoutine(wave));
         }
@@ -116,7 +144,6 @@ public class GameManager : MonoBehaviour
 
         if (!isSpawning && monstersRemainingToSpawn <= 0 && activeMonstersInScene <= 0)
         {
-            // ใช้ delayBeforeNextWave ของเวฟที่เพิ่งจบ เป็นตัวหน่วงก่อนขึ้นเวฟถัดไป
             float delay = waves[currentWaveIndex].delayBeforeNextWave;
             currentWaveIndex++;
 
@@ -139,13 +166,9 @@ public class GameManager : MonoBehaviour
         }
         StartNextWave();
     }
-
     #endregion
 
     #region Secret Character (Win Condition)
-    // ทำงานตอนเคลียร์เวฟสุดท้ายครบแล้ว: หยุด GameSpeed/MonsterSpeed, spawn ตัวละครลับขึ้นมา
-    // แล้วสั่งให้ PlayerController เดินเข้าไปหา (เงื่อนไขชนะเกม)
-
     [Header("Secret Character (Win Condition)")]
     [SerializeField] private GameObject secretCharacterPrefab;
     [SerializeField] private Transform secretSpawnPoint;
@@ -163,8 +186,8 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("[ALL WAVES CLEARED] Spawning Secret Character...");
 
-        GameSpeed = 0f;     // หยุดฉากหลังทันทีที่ประตูโผล่มา
-        MonsterSpeed = 0f;  // หยุดมอนที่เหลือ (ถ้ามี) ด้วยเช่นกัน
+        isGameHalted = true;     // หยุดระบบความเร็วทั้งหมด
+        CalculateFinalSpeeds();  // บังคับให้สปีดกลายเป็น 0 ทันที
 
         if (secretCharacterPrefab != null && secretSpawnPoint != null)
         {
@@ -175,19 +198,15 @@ public class GameManager : MonoBehaviour
             }
         }
     }
-
     #endregion
 
     #region Game Over / Game Win
-    // เรียกจากภายนอก (เช่น PlayerController ตอนโดนมอนชน) เพื่อจบเกมแบบแพ้หรือชนะ
-    // หยุด GameSpeed/MonsterSpeed ทันที แล้วรอสักครู่/หยุดเวลาเกม ก่อนเปิด UI ผลลัพธ์ผ่าน UIManager
-
     private readonly WaitForSeconds waitGameOver = new WaitForSeconds(1.5f);
 
     public void TriggerGameOver()
     {
-        GameSpeed = 0f;     // <--- หยุดฉากหลังทันทีที่ผู้เล่นตาย
-        MonsterSpeed = 0f;  // หยุดมอน
+        isGameHalted = true;    // หยุดผู้เล่นตาย
+        CalculateFinalSpeeds();
         StartCoroutine(GameOverDelayRoutine());
     }
 
@@ -203,14 +222,13 @@ public class GameManager : MonoBehaviour
 
     public void TriggerGameWin()
     {
-        GameSpeed = 0f;     // หยุดฉากหลังทันทีที่ชนะเกม 
-        MonsterSpeed = 0f;  // หยุดมอน
+        isGameHalted = true;    // หยุดเมื่อชนะเกม
+        CalculateFinalSpeeds();
         Time.timeScale = 0f;
         if (UIManager.Instance != null)
         {
             UIManager.Instance.ShowGameWin();
         }
     }
-
     #endregion
 }

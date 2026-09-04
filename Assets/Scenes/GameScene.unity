@@ -1062,19 +1062,19 @@ MonoBehaviour:
   ragePenaltyPerMiss: 5
   ragePhases:
   - phaseName: 1
-    requiredRage: 30
-    bgSpeedMultiplier: 0
-    monsterSpeedMultiplier: 0
+    requiredRage: 15
+    bgSpeedBonus: 0.1
+    monsterSpeedBonus: 0.1
     scoreMultiplier: 1.2
   - phaseName: 2
-    requiredRage: 60
-    bgSpeedMultiplier: 0
-    monsterSpeedMultiplier: 0
+    requiredRage: 30
+    bgSpeedBonus: 0.2
+    monsterSpeedBonus: 0.2
     scoreMultiplier: 1.4
   - phaseName: 3
-    requiredRage: 90
-    bgSpeedMultiplier: 0
-    monsterSpeedMultiplier: 0
+    requiredRage: 45
+    bgSpeedBonus: 0.4
+    monsterSpeedBonus: 0.4
     scoreMultiplier: 1.6
 --- !u!4 &665019971
 Transform:

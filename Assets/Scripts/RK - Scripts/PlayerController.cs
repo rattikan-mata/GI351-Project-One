@@ -85,11 +85,7 @@ public class PlayerController : MonoBehaviour
     {
         if (animator != null) animator.SetTrigger(HitTrigger);
 
-        if (!isDashing && !isWalkingToSecret)
-        {
-            StartCoroutine(QuickDashRoutine());
-        }
-
+        // 1. ตรวจสอบการชน (Hit box) ณ ตำแหน่งปัจจุบันก่อนพุ่งตัว
         Collider2D hitMonster = Physics2D.OverlapCircle(hitPoint.position, hitRadius, monsterLayer);
 
         if (hitMonster != null)
@@ -100,6 +96,12 @@ public class PlayerController : MonoBehaviour
         else
         {
             ScoreManager.Instance.RegisterMiss();
+        }
+
+        // 2. ทำการพุ่งตัว (Dash) หลังจากคำนวณการโจมตีเรียบร้อยแล้ว
+        if (!isDashing && !isWalkingToSecret)
+        {
+            StartCoroutine(QuickDashRoutine());
         }
     }
 

@@ -1055,10 +1055,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ScoreManager
   hitColor: {r: 0.25882354, g: 0.92549026, b: 0.8588236, a: 1}
   missColor: {r: 1, g: 0, b: 0, a: 1}
-  maxRage: 150
+  maxRage: 100
   currentRage: 0
   rageDecreasePerSec: 0
-  ragePerKill: 3
+  ragePerKill: 4
   ragePenaltyPerMiss: 5
   ragePhases:
   - phaseName: 1
@@ -1067,12 +1067,12 @@ MonoBehaviour:
     monsterSpeedBonus: 0.1
     scoreMultiplier: 1.2
   - phaseName: 2
-    requiredRage: 70
+    requiredRage: 60
     bgSpeedBonus: 0.2
     monsterSpeedBonus: 0.2
     scoreMultiplier: 1.4
   - phaseName: 3
-    requiredRage: 120
+    requiredRage: 90
     bgSpeedBonus: 0.4
     monsterSpeedBonus: 0.4
     scoreMultiplier: 1.6

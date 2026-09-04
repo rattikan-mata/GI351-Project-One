@@ -1057,7 +1057,7 @@ MonoBehaviour:
   missColor: {r: 1, g: 0, b: 0, a: 1}
   maxRage: 120
   currentRage: 0
-  rageDecreasePerSec: 0.5
+  rageDecreasePerSec: 0
   ragePerKill: 3
   ragePenaltyPerMiss: 5
   ragePhases:
@@ -1124,16 +1124,16 @@ MonoBehaviour:
   baseMonsterSpeed: 5
   waves:
   - waveName: Wave 1
-    monsterCount: 10
-    bgSpeedMultiplier: 1
-    monsterSpeedMultiplier: 1
-    secPerMonster: 2
+    monsterCount: 5
+    bgSpeedMultiplier: 1.3
+    monsterSpeedMultiplier: 1.2
+    secPerMonster: 1.5
     delayBeforeNextWave: 1
   - waveName: Wave 2
-    monsterCount: 20
-    bgSpeedMultiplier: 1
-    monsterSpeedMultiplier: 1
-    secPerMonster: 2
+    monsterCount: 5
+    bgSpeedMultiplier: 1.3
+    monsterSpeedMultiplier: 1.2
+    secPerMonster: 1.5
     delayBeforeNextWave: 1
   monsterPrefab: {fileID: 1649576280277407282, guid: 21a32323df5dbe744a250af1e6487e28, type: 3}
   spawnPoint: {fileID: 370044540}

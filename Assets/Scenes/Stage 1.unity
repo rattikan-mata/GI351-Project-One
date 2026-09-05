@@ -1055,26 +1055,26 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ScoreManager
   hitColor: {r: 0.25882354, g: 0.92549026, b: 0.8588236, a: 1}
   missColor: {r: 1, g: 0, b: 0, a: 1}
-  maxRage: 100
+  maxRage: 30
   currentRage: 0
   rageDecreasePerSec: 0
-  ragePerKill: 4
-  ragePenaltyPerMiss: 5
+  ragePerKill: 1
+  ragePenaltyPerMiss: 10
   ragePhases:
   - phaseName: 1
-    requiredRage: 30
-    bgSpeedBonus: 0.1
-    monsterSpeedBonus: 0.1
+    requiredRage: 10
+    bgSpeedBonus: 0.3
+    monsterSpeedBonus: 0.3
     scoreMultiplier: 1.2
   - phaseName: 2
-    requiredRage: 60
-    bgSpeedBonus: 0.2
-    monsterSpeedBonus: 0.2
+    requiredRage: 20
+    bgSpeedBonus: 0.6
+    monsterSpeedBonus: 0.6
     scoreMultiplier: 1.4
   - phaseName: 3
-    requiredRage: 90
-    bgSpeedBonus: 0.4
-    monsterSpeedBonus: 0.4
+    requiredRage: 30
+    bgSpeedBonus: 1
+    monsterSpeedBonus: 1
     scoreMultiplier: 1.6
 --- !u!4 &665019971
 Transform:
@@ -1124,29 +1124,65 @@ MonoBehaviour:
   baseMonsterSpeed: 5
   waves:
   - waveName: Wave 1
-    monsterCount: 10
+    monsterCount: 4
     bgSpeedMultiplier: 1.3
-    monsterSpeedMultiplier: 1.1
-    secPerMonster: 1.8
-    delayBeforeNextWave: 1
+    monsterSpeedMultiplier: 1.3
+    secPerMonster: 0.8
+    delayBeforeNextWave: 0
   - waveName: Wave 2
-    monsterCount: 15
-    bgSpeedMultiplier: 1.4
-    monsterSpeedMultiplier: 1.15
-    secPerMonster: 1.6
-    delayBeforeNextWave: 1
+    monsterCount: 2
+    bgSpeedMultiplier: 1.3
+    monsterSpeedMultiplier: 1.3
+    secPerMonster: 0.5
+    delayBeforeNextWave: 0
   - waveName: Wave 3
-    monsterCount: 20
-    bgSpeedMultiplier: 1.5
-    monsterSpeedMultiplier: 1.2
-    secPerMonster: 1.4
-    delayBeforeNextWave: 1
+    monsterCount: 3
+    bgSpeedMultiplier: 1.3
+    monsterSpeedMultiplier: 1.3
+    secPerMonster: 0.5
+    delayBeforeNextWave: 0
   - waveName: wave 4
-    monsterCount: 15
-    bgSpeedMultiplier: 1.55
-    monsterSpeedMultiplier: 1.25
-    secPerMonster: 1.2
-    delayBeforeNextWave: 1
+    monsterCount: 2
+    bgSpeedMultiplier: 1.3
+    monsterSpeedMultiplier: 1.3
+    secPerMonster: 0.5
+    delayBeforeNextWave: 0
+  - waveName: wave 5
+    monsterCount: 6
+    bgSpeedMultiplier: 1.3
+    monsterSpeedMultiplier: 1.3
+    secPerMonster: 0.5
+    delayBeforeNextWave: 0.5
+  - waveName: wave 6
+    monsterCount: 3
+    bgSpeedMultiplier: 1.3
+    monsterSpeedMultiplier: 1.3
+    secPerMonster: 0.5
+    delayBeforeNextWave: 0.5
+  - waveName: wave 7
+    monsterCount: 6
+    bgSpeedMultiplier: 1.3
+    monsterSpeedMultiplier: 1.3
+    secPerMonster: 0.8
+    delayBeforeNextWave: 0.2
+  - waveName: wave 8
+    monsterCount: 3
+    bgSpeedMultiplier: 1.3
+    monsterSpeedMultiplier: 1.3
+    secPerMonster: 0.5
+    delayBeforeNextWave: 0.2
+  - waveName: wave 9
+    monsterCount: 3
+    bgSpeedMultiplier: 1.3
+    monsterSpeedMultiplier: 1.3
+    secPerMonster: 0.5
+    delayBeforeNextWave: 0.2
+  - waveName: wave 10
+    monsterCount: 6
+    bgSpeedMultiplier: 1.3
+    monsterSpeedMultiplier: 1.3
+    secPerMonster: 0.5
+    delayBeforeNextWave: 0.5
   monsterPrefab: {fileID: 1649576280277407282, guid: 21a32323df5dbe744a250af1e6487e28, type: 3}
   spawnPoint: {fileID: 370044540}
   secretCharacterPrefab: {fileID: 3780262786638575776, guid: f457fb0e1c9e18d4baa5c3c2b81aac53, type: 3}

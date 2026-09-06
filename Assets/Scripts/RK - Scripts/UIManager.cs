@@ -8,133 +8,118 @@ public class UIManager : MonoBehaviour
 {
     public static UIManager Instance { get; private set; }
 
-    [Header("UI Hearts")]
-    [SerializeField] private Image[] heartImages;
-
-    [Header("UI Texts")]
-    [SerializeField] private TextMeshProUGUI scoreText;
-    [SerializeField] private TextMeshProUGUI comboText;
-    [SerializeField] private TextMeshProUGUI feedbackText;
-
-    [Header("Feedback Settings")]
-    [SerializeField] private float feedbackDisplayTime = 1f;
-    private Coroutine feedbackCoroutine;
-    private WaitForSeconds waitFeedback;
-
-    [Header("Combo UI")]
-    [SerializeField] private GameObject comboContainer; 
-
+    #region Variables
     [Header("Panels")]
     [SerializeField] private GameObject mainMenuPanel;
-    [SerializeField] private GameObject creditPanel;
+    [SerializeField] private GameObject cutScenePanel;
+    [SerializeField] private GameObject gameplayHUD;
     [SerializeField] private GameObject pausePanel;
     [SerializeField] private GameObject gameOverPanel;
     [SerializeField] private GameObject gameWinPanel;
 
-    [Header("Result Score Texts")]
-    [SerializeField] private TextMeshProUGUI gameOverScoreText;
-    [SerializeField] private TextMeshProUGUI gameWinScoreText;
+    [Header("Pause Background")]
+    [SerializeField] private Image pauseDimImage;
+
+    [Header("Pills")]
+    [SerializeField] private Image[] pillImages;
+    private static readonly Color PillDisabledColor = new Color(0.2f, 0.2f, 0.2f, 0.3f);
+
+    [Header("In-Game Texts")]
+    [SerializeField] private TextMeshProUGUI scoreText;
+    [SerializeField] private TextMeshProUGUI comboText;
+    [SerializeField] private TextMeshProUGUI feedbackText;
+    [SerializeField] private float feedbackDuration = 0.8f;
+    private Coroutine feedbackCoroutine;
+
+    [Header("Minimap Slider")]
+    [SerializeField] private Slider minimapSlider;
+
+    [Header("End Game Texts")]
+    [SerializeField] private TextMeshProUGUI winScoreText;
+    [SerializeField] private TextMeshProUGUI winMaxComboText;
+    [SerializeField] private TextMeshProUGUI winMissText;
+
+    [SerializeField] private TextMeshProUGUI loseScoreText;
+    [SerializeField] private TextMeshProUGUI loseMaxComboText;
+    [SerializeField] private TextMeshProUGUI loseMissText;
 
     private bool isPaused = false;
-    private static readonly Color HeartDisabledColor = new Color(0.3f, 0.3f, 0.3f, 0.5f);
+    private bool isInCutScene = false;
+    #endregion
 
+    #region Initialization
     private void Awake()
     {
         if (Instance == null) Instance = this;
         else Destroy(gameObject);
-
-        waitFeedback = new WaitForSeconds(feedbackDisplayTime);
     }
 
     private void Start()
     {
-        if (feedbackText != null) feedbackText.text = "";
+        if (mainMenuPanel != null && mainMenuPanel.activeSelf)
+        {
+            Time.timeScale = 0f;
+        }
+        else
+        {
+            Time.timeScale = 1f;
+        }
+
+        UpdatePillsUI(3);
         UpdateScoreUI(0, 0);
+        UpdateMinimapProgress(0f);
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (isInCutScene && Input.GetKeyDown(KeyCode.Space))
+        {
+            EndCutScene();
+        }
+
+        if (Input.GetKeyDown(KeyCode.P))
         {
             if (isPaused) ResumeGame();
             else PauseGame();
         }
     }
+    #endregion
 
-    public void UpdateHeartsUI(int currentHP)
+    #region Main Menu & CutScene
+    public void OnStartButtonClicked()
     {
-        for (int i = 0; i < heartImages.Length; i++)
-        {
-            heartImages[i].color = (i < currentHP) ? Color.white : HeartDisabledColor;
-        }
+        if (mainMenuPanel != null) mainMenuPanel.SetActive(false);
+        StartCutScene();
     }
 
-    public void UpdateScoreUI(int score, int combo)
+    public void OnExitButtonClicked()
     {
-        if (scoreText != null) scoreText.SetText("{0}", score);
-
-        
-        if (comboContainer != null)
-        {
-            comboContainer.SetActive(combo > 0);
-        }
-
-        if (comboText != null && combo > 0)
-        {
-            comboText.SetText("{0}", combo);
-        }
-    }
-
-    public void ShowFeedback(string message, Color color)
-    {
-        if (feedbackText == null) return;
-
-        feedbackText.text = message;
-        feedbackText.color = color;
-
-        if (feedbackCoroutine != null)
-        {
-            StopCoroutine(feedbackCoroutine);
-        }
-
-        feedbackCoroutine = StartCoroutine(HideFeedbackRoutine());
-    }
-
-    private IEnumerator HideFeedbackRoutine()
-    {
-        yield return waitFeedback;
-        if (feedbackText != null)
-        {
-            feedbackText.text = "";
-        }
-    }
-
-    public void StartGame()
-    {
-        Time.timeScale = 1f;
-        SceneManager.LoadScene("GameScene");
-    }
-
-    public void OpenCredit()
-    {
-        if (creditPanel != null) creditPanel.SetActive(true);
-    }
-
-    public void CloseCredit()
-    {
-        if (creditPanel != null) creditPanel.SetActive(false);
-    }
-
-    public void QuitGame()
-    {
+        Debug.Log("Exit Game");
         Application.Quit();
-        Debug.Log("[GAME] Quit Game requested.");
     }
 
+    public void StartCutScene()
+    {
+        isInCutScene = true;
+        Time.timeScale = 0f;
+        if (cutScenePanel != null) cutScenePanel.SetActive(true);
+    }
+
+    public void EndCutScene()
+    {
+        isInCutScene = false;
+        Time.timeScale = 1f;
+        if (cutScenePanel != null) cutScenePanel.SetActive(false);
+        if (gameplayHUD != null) gameplayHUD.SetActive(true);
+    }
+    #endregion
+
+    #region Pause Game
     public void PauseGame()
     {
         isPaused = true;
         Time.timeScale = 0f;
+        if (pauseDimImage != null) pauseDimImage.gameObject.SetActive(true);
         if (pausePanel != null) pausePanel.SetActive(true);
     }
 
@@ -142,6 +127,7 @@ public class UIManager : MonoBehaviour
     {
         isPaused = false;
         Time.timeScale = 1f;
+        if (pauseDimImage != null) pauseDimImage.gameObject.SetActive(false);
         if (pausePanel != null) pausePanel.SetActive(false);
     }
 
@@ -156,22 +142,84 @@ public class UIManager : MonoBehaviour
         Time.timeScale = 1f;
         SceneManager.LoadScene("MainMenuScene");
     }
+    #endregion
+
+    #region HUD Updates (Pills, Score, Minimap, Feedback)
+    public void UpdatePillsUI(int currentPills)
+    {
+        for (int i = 0; i < pillImages.Length; i++)
+        {
+            pillImages[i].color = (i < currentPills) ? Color.white : PillDisabledColor;
+        }
+    }
+
+    public void UpdateScoreUI(int score, int combo)
+    {
+        if (scoreText != null) scoreText.SetText("{0}", score);
+
+        if (comboText != null)
+        {
+            if (combo > 0)
+            {
+                if (!comboText.gameObject.activeSelf) comboText.gameObject.SetActive(true);
+                comboText.SetText("COMBO {0}", combo);
+            }
+            else
+            {
+                if (comboText.gameObject.activeSelf) comboText.gameObject.SetActive(false);
+            }
+        }
+    }
+
+    public void ShowFeedback(string message, Color color)
+    {
+        if (feedbackText == null) return;
+
+        feedbackText.text = message;
+        feedbackText.color = color;
+
+        if (feedbackCoroutine != null) StopCoroutine(feedbackCoroutine);
+        feedbackCoroutine = StartCoroutine(HideFeedbackRoutine());
+    }
+
+    private IEnumerator HideFeedbackRoutine()
+    {
+        yield return new WaitForSecondsRealtime(feedbackDuration);
+        if (feedbackText != null) feedbackText.text = "";
+    }
+
+    public void UpdateMinimapProgress(float progress)
+    {
+        if (minimapSlider != null)
+        {
+            minimapSlider.value = Mathf.Clamp01(progress);
+        }
+    }
+    #endregion
+
+    #region End Game Panels
+    public void ShowGameWin()
+    {
+        if (gameWinPanel != null) gameWinPanel.SetActive(true);
+
+        if (ScoreManager.Instance != null)
+        {
+            if (winScoreText != null) winScoreText.SetText("Score: {0}", ScoreManager.Instance.CurrentScore);
+            if (winMaxComboText != null) winMaxComboText.SetText("Max Combo: {0}", ScoreManager.Instance.MaxCombo);
+            if (winMissText != null) winMissText.SetText("Total Miss: {0}", ScoreManager.Instance.TotalMisses);
+        }
+    }
 
     public void ShowGameOver()
     {
         if (gameOverPanel != null) gameOverPanel.SetActive(true);
-        if (gameOverScoreText != null && ScoreManager.Instance != null)
-        {
-            gameOverScoreText.SetText("Total Score: {0}", ScoreManager.Instance.CurrentScore);
-        }
-    }
 
-    public void ShowGameWin()
-    {
-        if (gameWinPanel != null) gameWinPanel.SetActive(true);
-        if (gameWinScoreText != null && ScoreManager.Instance != null)
+        if (ScoreManager.Instance != null)
         {
-            gameWinScoreText.SetText("Total Score: {0}", ScoreManager.Instance.CurrentScore);
+            if (loseScoreText != null) loseScoreText.SetText("Score: {0}", ScoreManager.Instance.CurrentScore);
+            if (loseMaxComboText != null) loseMaxComboText.SetText("Max Combo: {0}", ScoreManager.Instance.MaxCombo);
+            if (loseMissText != null) loseMissText.SetText("Total Miss: {0}", ScoreManager.Instance.TotalMisses);
         }
     }
+    #endregion
 }

@@ -27,6 +27,7 @@ public class ScoreManager : MonoBehaviour
     [Header("Score Settings")]
     public int CurrentScore { get; private set; }
     public int CurrentCombo { get; private set; }
+    public int MaxCombo { get; private set; }
     public int TotalMisses { get; private set; }
 
     [Header("Feedback Colors")]

@@ -3,6 +3,7 @@ using UnityEngine;
 [RequireComponent(typeof(Collider2D))]
 public class Monster : MonoBehaviour
 {
+    #region Variables
     [SerializeField] private float despawnX = -15f;
     private Transform cachedTransform;
 
@@ -18,6 +19,7 @@ public class Monster : MonoBehaviour
 
     [Tooltip("สเกลของวงแหวนตอนที่ทับจุดตีพอดีเป๊ะ")]
     [SerializeField] private Vector3 targetRingScale = new Vector3(1f, 1f, 1f);
+    #endregion
 
     private void Awake()
     {

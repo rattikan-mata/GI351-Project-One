@@ -5,6 +5,7 @@ public class PlayerController : MonoBehaviour
 {
     public static PlayerController Instance { get; private set; }
 
+    #region Variables
     [Header("Hit Settings")]
     [SerializeField] private Transform hitPoint;
 
@@ -44,7 +45,9 @@ public class PlayerController : MonoBehaviour
     // Cache Yield Instructions
     private WaitForSeconds waitFlash;
     private WaitForSeconds waitDash;
+    #endregion
 
+    #region Initialization
     private void Awake()
     {
         Instance = this;
@@ -62,7 +65,7 @@ public class PlayerController : MonoBehaviour
         originalLocalPos = cachedTransform.localPosition;
         if (UIManager.Instance != null)
         {
-            UIManager.Instance.UpdateHeartsUI(currentHealth);
+            UIManager.Instance.UpdatePillsUI(currentHealth);
         }
     }
 
@@ -84,6 +87,7 @@ public class PlayerController : MonoBehaviour
             PerformHit();
         }
     }
+    #endregion
 
     private void PerformHit()
     {
@@ -118,7 +122,7 @@ public class PlayerController : MonoBehaviour
 
         if (UIManager.Instance != null)
         {
-            UIManager.Instance.UpdateHeartsUI(currentHealth);
+            UIManager.Instance.UpdatePillsUI(currentHealth);
         }
 
         if (currentHealth <= 0)
@@ -159,7 +163,6 @@ public class PlayerController : MonoBehaviour
         {
             spriteRenderer.color = originalColor;
         }
-
         isInvincible = false;
     }
 

@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 5657e0502ca16194b8225b498f871310
+guid: f1a8322f2b33568419e9e09c0a5c42df
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 273703801821180400
-    second: Heart hit_0
+      213: 2607259032277190917
+    second: Ui_Flag_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -96,17 +96,30 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Heart hit_0
+      name: Ui_Flag_0
       rect:
         serializedVersion: 2
-        x: 10
-        y: 96
-        width: 978
-        height: 783
+        x: 12
+        y: 3
+        width: 66
+        height: 99
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 0f1b93958246cc300800000000000000
-      internalID: 273703801821180400
+      spriteID: 5098f48a648de2420800000000000000
+      internalID: 2607259032277190917
       vertices: []
       indices: 
       edges: []
@@ -135,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Heart hit_0: 273703801821180400
+      Ui_Flag_0: 2607259032277190917
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

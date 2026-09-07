@@ -21,12 +21,17 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject creditPanel;
 
     [Header("GamePlay")]
+    
     [SerializeField] private GameObject gameplayHUD;
     [SerializeField] private GameObject hitCircleSprite;
     [SerializeField] private GameObject comboContainer;
     [SerializeField] private TextMeshProUGUI scoreText;
     [SerializeField] private TextMeshProUGUI comboText;
-    [SerializeField] private TextMeshProUGUI feedbackText;
+
+   
+    [SerializeField] private TextMeshProUGUI hitFeedbackText;
+    [SerializeField] private TextMeshProUGUI missFeedbackText;
+
 
     [Header("Feedback Settings")]
     [SerializeField] private float feedbackDisplayTime = 1f;
@@ -96,10 +101,11 @@ public class UIManager : MonoBehaviour
             UpdateScoreUI(0, 0);
             UpdatePulsePhase(0);
 
-            // ยกเลิกการสร้างธง 11 อันจากตรงนี้ ปล่อยให้ GameManager เป็นคนสั่งตอนเริ่มเกม
-            UpdateMinimapProgress(0f);
+            
+            if (hitFeedbackText != null) hitFeedbackText.text = "";
+            if (missFeedbackText != null) missFeedbackText.text = "";
 
-            if (feedbackText != null) feedbackText.text = "";
+            UpdateMinimapProgress(0f);
         }
     }
 
@@ -269,10 +275,19 @@ public class UIManager : MonoBehaviour
 
     public void ShowFeedback(string message, Color color)
     {
-        if (feedbackText == null) return;
+        // ตรวจสอบว่าเป็น Hit หรือ Miss จากข้อความ
+        bool isHit = message.Contains("Hit");
 
-        feedbackText.color = color;
-        feedbackText.fontMaterial.SetColor("_UnderlayColor", color);
+        if (isHit)
+        {
+            if (hitFeedbackText != null) hitFeedbackText.text = message;
+            if (missFeedbackText != null) missFeedbackText.text = ""; // ปิดฝั่ง Miss
+        }
+        else
+        {
+            if (missFeedbackText != null) missFeedbackText.text = message;
+            if (hitFeedbackText != null) hitFeedbackText.text = ""; // ปิดฝั่ง Hit
+        }
 
         if (feedbackCoroutine != null)
         {
@@ -285,10 +300,10 @@ public class UIManager : MonoBehaviour
     private IEnumerator HideFeedbackRoutine()
     {
         yield return waitFeedback;
-        if (feedbackText != null)
-        {
-            feedbackText.text = "";
-        }
+
+        
+        if (hitFeedbackText != null) hitFeedbackText.text = "";
+        if (missFeedbackText != null) missFeedbackText.text = "";
     }
 
     public void UpdatePulsePhase(int phase)

@@ -16,6 +16,9 @@ public class WaveData
 
     public float secPerMonster = 2f;
     public float delayBeforeNextWave = 2f;
+
+    [Header("Elite Monster Config")]
+    public bool spawnEliteMonsterAtEnd = false;
 }
 
 public class GameManager : MonoBehaviour
@@ -87,6 +90,7 @@ public class GameManager : MonoBehaviour
 
     [Header("Spawner References")]
     [SerializeField] private GameObject monsterPrefab;
+    [SerializeField] private GameObject eliteMonsterPrefab; 
     [SerializeField] private Transform spawnPoint;
 
     private int currentWaveIndex = 0;
@@ -142,6 +146,16 @@ public class GameManager : MonoBehaviour
                 activeMonstersInScene++;
             }
         }
+
+        // --- ปล่อย Elite Monster ตอนจบเวฟ ---
+        if (wave.spawnEliteMonsterAtEnd && eliteMonsterPrefab != null && spawnPoint != null)
+        {
+            yield return waitInterval;
+            Instantiate(eliteMonsterPrefab, spawnPoint.position, Quaternion.identity);
+            activeMonstersInScene++;
+        }
+        // --------------------------------------------------------
+
         isSpawning = false;
     }
 

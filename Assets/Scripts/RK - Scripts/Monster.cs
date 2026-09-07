@@ -4,46 +4,35 @@ using UnityEngine;
 public class Monster : MonoBehaviour
 {
     #region Variables
-    // ใช้เลือกว่ามอนตัวนี้เป็นชนิดไหน เพื่อเล่นเสียงตายให้ถูกตัว (Monster 1 / ElithMonster)
     public enum MonsterType { Monster1, ElithMonster }
 
     [Header("Monster Type")]
-    [SerializeField] private MonsterType monsterType = MonsterType.Monster1;
+    [SerializeField] protected MonsterType monsterType = MonsterType.Monster1;
 
-    [SerializeField] private float despawnX = -15f;
-    private Transform cachedTransform;
+    [SerializeField] protected float despawnX = -15f;
+    protected Transform cachedTransform;
 
     [Header("Timing Ring (Visual Only)")]
-    [Tooltip("ลาก Empty GameObject ที่เป็นวงแหวนมาใส่ตรงนี้")]
-    [SerializeField] private Transform timingRing;
-
-    [Tooltip("ระยะห่างที่จะเริ่มโชว์วงแหวนและค่อยๆ หด")]
-    [SerializeField] private float startShrinkDistance = 4f;
-
-    [Tooltip("สเกลของวงแหวนตอนที่เพิ่งเริ่มโชว์")]
-    [SerializeField] private Vector3 maxRingScale = new Vector3(2.5f, 2.5f, 1f);
-
-    [Tooltip("สเกลของวงแหวนตอนที่ทับจุดตีพอดีเป๊ะ")]
-    [SerializeField] private Vector3 targetRingScale = new Vector3(1f, 1f, 1f);
+    [SerializeField] protected Transform timingRing;
+    [SerializeField] protected float startShrinkDistance = 4f;
+    [SerializeField] protected Vector3 maxRingScale = new Vector3(2.5f, 2.5f, 1f);
+    [SerializeField] protected Vector3 targetRingScale = new Vector3(1f, 1f, 1f);
     #endregion
 
-    private void Awake()
+    protected virtual void Awake()
     {
         cachedTransform = transform;
-
-        // ซ่อนวงแหวนไว้ก่อนตอนมอนสเตอร์เพิ่งเกิด
         if (timingRing != null)
         {
             timingRing.gameObject.SetActive(false);
         }
     }
 
-    private void Update()
+    protected virtual void Update()
     {
         float speed = (GameManager.Instance != null) ? GameManager.Instance.MonsterSpeed : 5f;
         cachedTransform.position += Vector3.left * (speed * Time.deltaTime);
 
-        // อัปเดตขนาดวงแหวนตลอดเวลา
         UpdateTimingRing();
 
         if (cachedTransform.position.x <= despawnX)
@@ -52,33 +41,25 @@ public class Monster : MonoBehaviour
         }
     }
 
-    private void UpdateTimingRing()
+    protected void UpdateTimingRing()
     {
-        // ถ้าไม่ได้ใส่วงแหวนมา หรือหาตัวผู้เล่นไม่เจอ ให้ข้ามไปเลย
         if (timingRing == null || PlayerController.Instance == null || PlayerController.Instance.HitZone == null) return;
 
-        // คำนวณระยะห่างแกน X ระหว่างจุดตีของผู้เล่นกับมอนสเตอร์
         float distance = Mathf.Abs(PlayerController.Instance.HitZone.position.x - cachedTransform.position.x);
 
-        // ถ้าระยะทางเข้าน้อยกว่าที่ตั้งไว้ ให้เริ่มหดวงแหวน
         if (distance <= startShrinkDistance)
         {
             if (!timingRing.gameObject.activeSelf) timingRing.gameObject.SetActive(true);
-
-            // คำนวณอัตราส่วนการหด (t = 0 คือเพิ่งเข้าระยะ, t = 1 คืออยู่ทับจุดตีพอดี)
             float t = Mathf.InverseLerp(startShrinkDistance, 0f, distance);
-
-            // ย่อขนาดวงแหวน
             timingRing.localScale = Vector3.Lerp(maxRingScale, targetRingScale, t);
         }
         else
         {
-            // ถ้ายังอยู่ไกลเกิน ให้ซ่อนไว้
             if (timingRing.gameObject.activeSelf) timingRing.gameObject.SetActive(false);
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    protected virtual void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Player"))
         {
@@ -90,14 +71,13 @@ public class Monster : MonoBehaviour
     }
 
     
-    /// เรียกตอนถูกผู้เล่นตี (ไม่ใช่ตอนวิ่งพ้นจอ) จะเล่นเสียงตายตามชนิดมอนก่อนทำลายตัวเอง
-    public void Die()
+    public virtual void Die()
     {
         PlayDeathSound();
         Destroy(gameObject);
     }
 
-    private void PlayDeathSound()
+    protected void PlayDeathSound()
     {
         if (AudioManager.Instance == null) return;
 
@@ -112,9 +92,8 @@ public class Monster : MonoBehaviour
         }
     }
 
-    private void OnDestroy()
+    protected virtual void OnDestroy()
     {
-        // ให้ GameManager นับจำนวนมอนเสมอ ไม่ว่าจะตายจากการถูกตี หรือวิ่งพ้นจอไปเอง
         if (GameManager.Instance != null)
         {
             GameManager.Instance.OnMonsterDespawnedOrKilled();

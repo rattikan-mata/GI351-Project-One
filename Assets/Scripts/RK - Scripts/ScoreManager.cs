@@ -85,6 +85,7 @@ public class ScoreManager : MonoBehaviour
     public void RegisterHit(int baseMonsterScore = 100)
     {
         CurrentCombo++;
+        if (CurrentCombo > MaxCombo) MaxCombo = CurrentCombo;
 
         float phaseScoreMultiplier = (currentActivePhase != null) ? currentActivePhase.scoreMultiplier : 1f;
         int gainedScore = Mathf.RoundToInt((baseMonsterScore + (CurrentCombo * 10)) * phaseScoreMultiplier);

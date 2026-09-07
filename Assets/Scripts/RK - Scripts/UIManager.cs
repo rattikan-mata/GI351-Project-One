@@ -54,11 +54,13 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Button endRestartButton;
     [SerializeField] private Button endMainMenuButton;
 
-    [Header("Minimap")]
+    [Header("MiniMap")]
+    [SerializeField] private Image spriteMinimap;
+    [SerializeField] private GameObject spriteFlagPrefab;
+    [SerializeField] private RectTransform flagContainer;
     [SerializeField] private Slider minimapSlider;
 
     private bool isPaused = false;
-    private static readonly Color HeartDisabledColor = new Color(0.3f, 0.3f, 0.3f, 0.5f);
 
     private void Awake()
     {
@@ -81,7 +83,9 @@ public class UIManager : MonoBehaviour
             UpdatePillsUI(3);
             UpdateScoreUI(0, 0);
             UpdatePulsePhase(0);
+            SpawnMinimapFlags(11);
             UpdateMinimapProgress(0f);
+
             if (feedbackText != null) feedbackText.text = "";
         }
     }
@@ -100,6 +104,50 @@ public class UIManager : MonoBehaviour
             else PauseGame();
         }
     }
+
+    #region Minimap Flag Spawner & Slider Logic
+    public void SpawnMinimapFlags(int totalPoints = 11)
+    {
+        if (spriteFlagPrefab == null || flagContainer == null) return;
+
+        foreach (Transform child in flagContainer)
+        {
+            Destroy(child.gameObject);
+        }
+
+        float width = flagContainer.rect.width;
+
+        for (int i = 0; i < totalPoints; i++)
+        {
+            GameObject flagObj = Instantiate(spriteFlagPrefab, flagContainer);
+            RectTransform rect = flagObj.GetComponent<RectTransform>();
+
+            if (rect != null)
+            {
+                rect.anchorMin = new Vector2(0f, 0.5f);
+                rect.anchorMax = new Vector2(0f, 0.5f);
+                rect.pivot = new Vector2(0.5f, 0.5f);
+
+                float t = (float)i / (totalPoints - 1);
+                rect.anchoredPosition = new Vector2(t * width, 0f);
+            }
+        }
+    }
+
+    public void UpdateMinimapByWave(int waveIndex, int totalWavesAndSecret = 11)
+    {
+        float progress = (float)waveIndex / (totalWavesAndSecret - 1);
+        UpdateMinimapProgress(progress);
+    }
+
+    public void UpdateMinimapProgress(float progress)
+    {
+        if (minimapSlider != null)
+        {
+            minimapSlider.value = Mathf.Clamp01(progress);
+        }
+    }
+    #endregion
 
     #region Main Menu & CutScene
     public void OnStartButtonClicked()
@@ -190,14 +238,6 @@ public class UIManager : MonoBehaviour
             {
                 pulseAnimPhases[i].SetActive(i == (phase - 1));
             }
-        }
-    }
-
-    public void UpdateMinimapProgress(float progress)
-    {
-        if (minimapSlider != null)
-        {
-            minimapSlider.value = Mathf.Clamp01(progress);
         }
     }
     #endregion

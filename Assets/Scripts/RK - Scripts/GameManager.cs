@@ -117,6 +117,11 @@ public class GameManager : MonoBehaviour
 
             CalculateFinalSpeeds(); // รวมค่าตัวคูณ Wave กับ Rage Bonus
 
+            if (UIManager.Instance != null)
+            {
+                UIManager.Instance.UpdateMinimapByWave(currentWaveIndex, 11);
+            }
+
             monstersRemainingToSpawn = wave.monsterCount;
             StartCoroutine(SpawnWaveRoutine(wave));
         }
@@ -190,6 +195,11 @@ public class GameManager : MonoBehaviour
 
         isGameHalted = true;
         CalculateFinalSpeeds();
+
+        if (UIManager.Instance != null)
+        {
+            UIManager.Instance.UpdateMinimapByWave(10, 11);
+        }
 
         if (secretCharacterPrefab != null && secretSpawnPoint != null)
         {

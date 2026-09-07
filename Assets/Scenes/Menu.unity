@@ -883,7 +883,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -2873893313121424162, guid: 65c9df8befee2fb4c8b1fadb91cb1a69, type: 3}
+  m_Sprite: {fileID: 8947748791941295483, guid: 01553749e5b77c146bbe20f8d2fd856a, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1268,14 +1268,15 @@ MonoBehaviour:
   startButton: {fileID: 1274417482}
   exitButton: {fileID: 384791312}
   isCutSceneScene: 0
+  pressSpacePromptImage: {fileID: 0}
+  creditPanel: {fileID: 0}
   gameplayHUD: {fileID: 0}
   hitCircleSprite: {fileID: 0}
+  comboContainer: {fileID: 0}
   scoreText: {fileID: 0}
-  comboMissText: {fileID: 0}
-  hitFeedbackText: {fileID: 0}
-  hitFeedbackDuration: 0.5
+  comboText: {fileID: 0}
   feedbackText: {fileID: 0}
-  feedbackDuration: 0.8
+  feedbackDisplayTime: 1
   pillImages: []
   pulseAnimPhases:
   - {fileID: 0}
@@ -1293,7 +1294,12 @@ MonoBehaviour:
   totalMissText: {fileID: 0}
   endRestartButton: {fileID: 0}
   endMainMenuButton: {fileID: 0}
+  spriteMinimap: {fileID: 0}
+  flagContainer: {fileID: 0}
   minimapSlider: {fileID: 0}
+  normalWaveIconPrefab: {fileID: 0}
+  eliteWaveIconPrefab: {fileID: 0}
+  doorIconPrefab: {fileID: 0}
 --- !u!4 &1925576979
 Transform:
   m_ObjectHideFlags: 0

@@ -151,22 +151,38 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ee374234ab226d4e80861c34b7d5bde, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UIManager
-  heartImages:
-  - {fileID: 661458656}
-  - {fileID: 1661549711}
-  - {fileID: 1222703913}
+  startButton: {fileID: 0}
+  exitButton: {fileID: 0}
+  isCutSceneScene: 1
+  gameplayHUD: {fileID: 0}
+  hitCircleSprite: {fileID: 0}
   scoreText: {fileID: 189997367}
-  comboText: {fileID: 563385543}
+  comboMissText: {fileID: 0}
+  hitFeedbackText: {fileID: 0}
+  hitFeedbackDuration: 0.5
   feedbackText: {fileID: 1860307852}
-  feedbackDisplayTime: 0.7
-  comboContainer: {fileID: 1341578098}
-  mainMenuPanel: {fileID: 0}
-  creditPanel: {fileID: 0}
+  feedbackDuration: 0.8
+  pillImages:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  pulseAnimPhases:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   pausePanel: {fileID: 0}
-  gameOverPanel: {fileID: 1186996210}
+  pauseDimImage: {fileID: 0}
+  resumeButton: {fileID: 0}
+  pauseRestartButton: {fileID: 0}
+  pauseMainMenuButton: {fileID: 0}
   gameWinPanel: {fileID: 1614350266}
-  gameOverScoreText: {fileID: 0}
-  gameWinScoreText: {fileID: 0}
+  gameOverPanel: {fileID: 1186996210}
+  totalScoreText: {fileID: 0}
+  maxComboText: {fileID: 0}
+  totalMissText: {fileID: 0}
+  endRestartButton: {fileID: 0}
+  endMainMenuButton: {fileID: 0}
+  minimapSlider: {fileID: 0}
 --- !u!114 &79282177
 MonoBehaviour:
   m_ObjectHideFlags: 0

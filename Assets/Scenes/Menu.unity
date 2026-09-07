@@ -1265,25 +1265,35 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ee374234ab226d4e80861c34b7d5bde, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UIManager
-  mainMenuPanel: {fileID: 607270745}
-  cutScenePanel: {fileID: 0}
+  startButton: {fileID: 1274417482}
+  exitButton: {fileID: 384791312}
+  isCutSceneScene: 0
   gameplayHUD: {fileID: 0}
-  pausePanel: {fileID: 0}
-  gameOverPanel: {fileID: 0}
-  gameWinPanel: {fileID: 0}
-  pauseDimImage: {fileID: 0}
-  pillImages: []
+  hitCircleSprite: {fileID: 0}
   scoreText: {fileID: 0}
-  comboText: {fileID: 0}
+  comboMissText: {fileID: 0}
+  hitFeedbackText: {fileID: 0}
+  hitFeedbackDuration: 0.5
   feedbackText: {fileID: 0}
   feedbackDuration: 0.8
+  pillImages: []
+  pulseAnimPhases:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  pausePanel: {fileID: 0}
+  pauseDimImage: {fileID: 0}
+  resumeButton: {fileID: 0}
+  pauseRestartButton: {fileID: 0}
+  pauseMainMenuButton: {fileID: 0}
+  gameWinPanel: {fileID: 0}
+  gameOverPanel: {fileID: 0}
+  totalScoreText: {fileID: 0}
+  maxComboText: {fileID: 0}
+  totalMissText: {fileID: 0}
+  endRestartButton: {fileID: 0}
+  endMainMenuButton: {fileID: 0}
   minimapSlider: {fileID: 0}
-  winScoreText: {fileID: 0}
-  winMaxComboText: {fileID: 0}
-  winMissText: {fileID: 0}
-  loseScoreText: {fileID: 0}
-  loseMaxComboText: {fileID: 0}
-  loseMissText: {fileID: 0}
 --- !u!4 &1925576979
 Transform:
   m_ObjectHideFlags: 0

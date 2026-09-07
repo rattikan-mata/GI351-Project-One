@@ -8,12 +8,14 @@ public class PlayerController : MonoBehaviour
     #region Variables
     [Header("Hit Settings")]
     [SerializeField] private Transform hitPoint;
-
-    // เพิ่มบรรทัดนี้เพื่อให้ Monster.cs ดึงตำแหน่งไปใช้วัดระยะวงแหวนหดได้
     public Transform HitZone => hitPoint;
-
     [SerializeField] private float hitRadius = 1.2f;
     [SerializeField] private LayerMask monsterLayer;
+
+    [Tooltip("ระยะเวลาให้อภัย (วินาที) ป้องกันคอมโบหลุดหากเผลอกดแถมหลังมอนตาย")]
+    [SerializeField] private float missGracePeriod = 0.25f;
+    private float ignoreMissUntil = 0f;
+
 
     [Header("Health Settings")]
     [SerializeField] private int maxHealth = 3;
@@ -94,16 +96,21 @@ public class PlayerController : MonoBehaviour
         if (animator != null) animator.SetTrigger(HitTrigger);
         AudioManager.Instance?.PlayPlayerAttack();
 
-        // 1. ตรวจสอบการชน (Hit box) ณ ตำแหน่งปัจจุบันก่อนพุ่งตัว
+        // 1. ตรวจสอบการชน
         Collider2D hitMonster = Physics2D.OverlapCircle(hitPoint.position, hitRadius, monsterLayer);
 
         if (hitMonster != null)
         {
             ScoreManager.Instance.RegisterHit();
 
-            // ใช้ Die() ของ Monster เพื่อให้เล่นเสียงตายถูกชนิดก่อนทำลายตัว
             if (hitMonster.TryGetComponent<Monster>(out var monster))
             {
+                // --- เพิ่มเงื่อนไขเช็คว่าถ้าเป็น Elite Monster ถึงจะยืดเวลาให้อภัย ---
+                if (monster is EliteMonster)
+                {
+                    ignoreMissUntil = Time.time + missGracePeriod;
+                }
+                // -------------------------------------------------------------
                 monster.Die();
             }
             else
@@ -113,10 +120,12 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            ScoreManager.Instance.RegisterMiss();
+            if (Time.time > ignoreMissUntil)
+            {
+                ScoreManager.Instance.RegisterMiss();
+            }
         }
 
-        // 2. ทำการพุ่งตัว (Dash) หลังจากคำนวณการโจมตีเรียบร้อยแล้ว
         if (!isDashing && !isWalkingToSecret)
         {
             StartCoroutine(QuickDashRoutine());

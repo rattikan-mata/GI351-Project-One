@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 0911ab4d473ec7048b12503709fb03f9
+guid: f54a038778452c54593e8fe5b7010262
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 5191853097510026996
-    second: Bear (1)_0
+      213: -969651459434341474
+    second: EliteMons_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -96,17 +96,30 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Bear (1)_0
+      name: EliteMons_0
       rect:
         serializedVersion: 2
-        x: 548
-        y: 267
-        width: 936
-        height: 1528
+        x: 72
+        y: 117
+        width: 1134
+        height: 1108
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 4feb81372ea2d0840800000000000000
-      internalID: 5191853097510026996
+      spriteID: e9b1a74922b1b82f0800000000000000
+      internalID: -969651459434341474
       vertices: []
       indices: 
       edges: []
@@ -135,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Bear (1)_0: 5191853097510026996
+      EliteMons_0: -969651459434341474
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

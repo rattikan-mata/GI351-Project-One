@@ -153,7 +153,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::UIManager
   startButton: {fileID: 0}
   exitButton: {fileID: 0}
-  isCutSceneScene: 0
+  isCutSceneScene: 1
   creditPanel: {fileID: 0}
   gameplayHUD: {fileID: 253553838}
   hitCircleSprite: {fileID: 0}

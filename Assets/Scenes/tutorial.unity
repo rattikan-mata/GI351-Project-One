@@ -154,14 +154,14 @@ MonoBehaviour:
   startButton: {fileID: 0}
   exitButton: {fileID: 0}
   isCutSceneScene: 1
+  creditPanel: {fileID: 0}
   gameplayHUD: {fileID: 0}
   hitCircleSprite: {fileID: 0}
+  comboContainer: {fileID: 0}
   scoreText: {fileID: 189997367}
-  comboMissText: {fileID: 0}
-  hitFeedbackText: {fileID: 0}
-  hitFeedbackDuration: 0.5
+  comboText: {fileID: 0}
   feedbackText: {fileID: 1860307852}
-  feedbackDuration: 0.8
+  feedbackDisplayTime: 1
   pillImages:
   - {fileID: 0}
   - {fileID: 0}
@@ -182,6 +182,9 @@ MonoBehaviour:
   totalMissText: {fileID: 0}
   endRestartButton: {fileID: 0}
   endMainMenuButton: {fileID: 0}
+  spriteMinimap: {fileID: 0}
+  spriteFlagPrefab: {fileID: 0}
+  flagContainer: {fileID: 0}
   minimapSlider: {fileID: 0}
 --- !u!114 &79282177
 MonoBehaviour:
@@ -1145,13 +1148,16 @@ MonoBehaviour:
     monsterSpeedMultiplier: 1.2
     secPerMonster: 1.5
     delayBeforeNextWave: 1
+    spawnEliteMonsterAtEnd: 0
   - waveName: Wave 2
     monsterCount: 5
     bgSpeedMultiplier: 1.3
     monsterSpeedMultiplier: 1.2
     secPerMonster: 1.5
     delayBeforeNextWave: 1
+    spawnEliteMonsterAtEnd: 0
   monsterPrefab: {fileID: 1649576280277407282, guid: 21a32323df5dbe744a250af1e6487e28, type: 3}
+  eliteMonsterPrefab: {fileID: 5966462804116772361, guid: d055a78639936f648b40adf30eb6e293, type: 3}
   spawnPoint: {fileID: 370044540}
   secretCharacterPrefab: {fileID: 3780262786638575776, guid: f457fb0e1c9e18d4baa5c3c2b81aac53, type: 3}
   secretSpawnPoint: {fileID: 1841594710}

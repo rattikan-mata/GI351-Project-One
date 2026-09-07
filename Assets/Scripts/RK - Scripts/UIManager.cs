@@ -210,12 +210,9 @@ public class UIManager : MonoBehaviour
     {
         if (feedbackText == null) return;
 
-        feedbackText.text = message;
+        feedbackText.color = color;
 
-      
-        feedbackText.color = Color.white;
 
-        
         feedbackText.fontMaterial.SetColor("_UnderlayColor", color);
 
         

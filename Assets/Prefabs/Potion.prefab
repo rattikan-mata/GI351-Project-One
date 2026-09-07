@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &5966462804116772361
+--- !u!1 &1707085892471080110
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,41 +8,40 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 402013981778473725}
-  - component: {fileID: 1820003716128041155}
-  - component: {fileID: 715800136476045620}
-  - component: {fileID: 1593832821231286641}
-  m_Layer: 3
-  m_Name: EliteMonster
-  m_TagString: Monster
+  - component: {fileID: 4597226985521888660}
+  - component: {fileID: 2211990539439817313}
+  - component: {fileID: 6327296188379473580}
+  - component: {fileID: 8033853437568125187}
+  m_Layer: 0
+  m_Name: Potion
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &402013981778473725
+--- !u!4 &4597226985521888660
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5966462804116772361}
+  m_GameObject: {fileID: 1707085892471080110}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.0923253, y: -0.9792421, z: -1}
-  m_LocalScale: {x: 0.24036916, y: 0.24036916, z: 0.24036916}
+  m_LocalPosition: {x: 1.16, y: -1.51, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1581886695405395119}
+  m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!212 &1820003716128041155
+--- !u!212 &2211990539439817313
 SpriteRenderer:
   serializedVersion: 3
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5966462804116772361}
+  m_GameObject: {fileID: 1707085892471080110}
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
@@ -84,7 +83,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 5191853097510026996, guid: 0911ab4d473ec7048b12503709fb03f9, type: 3}
+  m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -95,13 +94,31 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
   m_BlendShapeWeights: []
---- !u!61 &715800136476045620
-BoxCollider2D:
+--- !u!114 &6327296188379473580
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5966462804116772361}
+  m_GameObject: {fileID: 1707085892471080110}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b3ca3a783369663459e5f35f2f1845c4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Potion
+  popHeight: 1.2
+  popDistance: 1
+  popDuration: 0.25
+  acceleration: 18
+  maxSpeed: 15
+  healAmount: 1
+--- !u!70 &8033853437568125187
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1707085892471080110}
   m_Enabled: 1
   serializedVersion: 3
   m_Density: 1
@@ -130,65 +147,5 @@ BoxCollider2D:
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 9.36, y: 15.28}
-    newSize: {x: 1, y: 1}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  m_Size: {x: 9.36, y: 15.28}
-  m_EdgeRadius: 0
---- !u!114 &1593832821231286641
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5966462804116772361}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5c97fe3126d15234d91625f14761ca84, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EliteMonster
-  monsterType: 0
-  despawnX: -15
-  timingRing: {fileID: 0}
-  startShrinkDistance: 4
-  maxRingScale: {x: 2.5, y: 2.5, z: 1}
-  targetRingScale: {x: 1, y: 1, z: 1}
-  spamDuration: 2
-  potionPrefab: {fileID: 1707085892471080110, guid: 852cc7c0847ebb64692ead15de0cb4da, type: 3}
---- !u!1 &6162254684028206953
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1581886695405395119}
-  m_Layer: 0
-  m_Name: Ring
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1581886695405395119
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6162254684028206953}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -10.7157345, y: 20.588692, z: 4.160268}
-  m_LocalScale: {x: 4.160268, y: 4.160268, z: 4.160268}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 402013981778473725}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Size: {x: 1, y: 1}
+  m_Direction: 0

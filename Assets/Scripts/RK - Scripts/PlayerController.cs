@@ -16,7 +16,6 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float missGracePeriod = 0.25f;
     private float ignoreMissUntil = 0f;
 
-
     [Header("Health Settings")]
     [SerializeField] private int maxHealth = 3;
     private int currentHealth;
@@ -105,12 +104,11 @@ public class PlayerController : MonoBehaviour
 
             if (hitMonster.TryGetComponent<Monster>(out var monster))
             {
-                // --- เพิ่มเงื่อนไขเช็คว่าถ้าเป็น Elite Monster ถึงจะยืดเวลาให้อภัย ---
+                // ถ้าเป็น Elite Monster ถึงจะเปิดใช้ระบบเวลาให้อภัยตอนกดวืด
                 if (monster is EliteMonster)
                 {
                     ignoreMissUntil = Time.time + missGracePeriod;
                 }
-                // -------------------------------------------------------------
                 monster.Die();
             }
             else
@@ -152,6 +150,19 @@ public class PlayerController : MonoBehaviour
         {
             AudioManager.Instance?.PlayPlayerHurt();
             StartCoroutine(InvincibilityRoutine());
+        }
+    }
+
+    public void Heal(int amount)
+    {
+        if (isDead) return;
+
+        // เพิ่มเลือดแต่ไม่ให้เกิน maxHealth
+        currentHealth = Mathf.Min(currentHealth + amount, maxHealth);
+
+        if (UIManager.Instance != null)
+        {
+            UIManager.Instance.UpdatePillsUI(currentHealth);
         }
     }
 

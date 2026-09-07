@@ -8,6 +8,7 @@ public class SecretCharacter : MonoBehaviour
         if (collision.CompareTag("Player"))
         {
             Debug.Log("[YOU WIN!] You saved Zenpai!");
+            AudioManager.Instance?.PlayGoal();
             GameManager.Instance.TriggerGameWin();
         }
     }

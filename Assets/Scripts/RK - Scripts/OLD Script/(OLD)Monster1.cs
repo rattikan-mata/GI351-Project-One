@@ -1,15 +1,9 @@
-using UnityEngine;
+/*using UnityEngine;
 
 [RequireComponent(typeof(Collider2D))]
 public class Monster : MonoBehaviour
 {
     #region Variables
-    // ใช้เลือกว่ามอนตัวนี้เป็นชนิดไหน เพื่อเล่นเสียงตายให้ถูกตัว (Monster 1 / ElithMonster)
-    public enum MonsterType { Monster1, ElithMonster }
-
-    [Header("Monster Type")]
-    [SerializeField] private MonsterType monsterType = MonsterType.Monster1;
-
     [SerializeField] private float despawnX = -15f;
     private Transform cachedTransform;
 
@@ -89,35 +83,11 @@ public class Monster : MonoBehaviour
         }
     }
 
-    
-    /// เรียกตอนถูกผู้เล่นตี (ไม่ใช่ตอนวิ่งพ้นจอ) จะเล่นเสียงตายตามชนิดมอนก่อนทำลายตัวเอง
-    public void Die()
-    {
-        PlayDeathSound();
-        Destroy(gameObject);
-    }
-
-    private void PlayDeathSound()
-    {
-        if (AudioManager.Instance == null) return;
-
-        switch (monsterType)
-        {
-            case MonsterType.Monster1:
-                AudioManager.Instance.PlayMonster1Dead();
-                break;
-            case MonsterType.ElithMonster:
-                AudioManager.Instance.PlayElithMonsterDead();
-                break;
-        }
-    }
-
     private void OnDestroy()
     {
-        // ให้ GameManager นับจำนวนมอนเสมอ ไม่ว่าจะตายจากการถูกตี หรือวิ่งพ้นจอไปเอง
         if (GameManager.Instance != null)
         {
             GameManager.Instance.OnMonsterDespawnedOrKilled();
         }
     }
-}
+}*/

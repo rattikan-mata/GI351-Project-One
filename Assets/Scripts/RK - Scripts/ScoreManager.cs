@@ -139,6 +139,31 @@ public class ScoreManager : MonoBehaviour
 
         if (newPhase != currentActivePhase)
         {
+            bool wasTopPhase = ragePhases.Count > 0 && currentActivePhase == ragePhases[0];
+            bool isNewTopPhase = ragePhases.Count > 0 && newPhase == ragePhases[0];
+
+            if (isNewTopPhase && !wasTopPhase)
+            {
+                // เพิ่งเข้ามาถึง Stage 3 (ครั้งแรก หรือกลับขึ้นมาใหม่หลังจากหลุดไปแล้ว) -> เริ่ม loop
+                AudioManager.Instance?.PlayRageStage3Loop();
+            }
+            else if (!isNewTopPhase && wasTopPhase)
+            {
+                // เพิ่งหลุดออกจาก Stage 3 (ไม่ว่าจะลงเฟสอื่นหรือหลุดหมดเลย) -> หยุดเสียงทันที
+                AudioManager.Instance?.StopRageStage3Loop();
+            }
+
+            // เสียง Rage Up (one-shot) ใช้เฉพาะตอนขึ้นเฟสอื่นที่ไม่ใช่ Stage 3 เท่านั้น
+            // (Stage 3 ใช้ระบบ loop ข้างบนแยกต่างหากแล้ว)
+            float oldRequiredRage = (currentActivePhase != null) ? currentActivePhase.requiredRage : 0f;
+            float newRequiredRage = (newPhase != null) ? newPhase.requiredRage : 0f;
+            bool isLevelingUp = newRequiredRage > oldRequiredRage;
+
+            if (isLevelingUp && newPhase != null && !isNewTopPhase)
+            {
+                AudioManager.Instance?.PlayRageUp();
+            }
+
             currentActivePhase = newPhase;
 
             // ดึงค่า Bonus (+ความเร็ว) ส่งไปให้ GameManager
@@ -164,6 +189,8 @@ public class ScoreManager : MonoBehaviour
         TotalMisses = 0;
         currentRage = 0f;
         currentActivePhase = null;
+
+        AudioManager.Instance?.StopRageStage3Loop(); // กันเสียงค้างถ้ารีเซ็ตตอนอยู่ Stage 3 พอดี
 
         if (GameManager.Instance != null)
         {

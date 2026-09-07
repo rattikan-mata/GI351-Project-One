@@ -1,4 +1,4 @@
-using System.Collections;
+/*using System.Collections;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -92,7 +92,6 @@ public class PlayerController : MonoBehaviour
     private void PerformHit()
     {
         if (animator != null) animator.SetTrigger(HitTrigger);
-        AudioManager.Instance?.PlayPlayerAttack();
 
         // 1. ตรวจสอบการชน (Hit box) ณ ตำแหน่งปัจจุบันก่อนพุ่งตัว
         Collider2D hitMonster = Physics2D.OverlapCircle(hitPoint.position, hitRadius, monsterLayer);
@@ -100,16 +99,7 @@ public class PlayerController : MonoBehaviour
         if (hitMonster != null)
         {
             ScoreManager.Instance.RegisterHit();
-
-            // ใช้ Die() ของ Monster เพื่อให้เล่นเสียงตายถูกชนิดก่อนทำลายตัว
-            if (hitMonster.TryGetComponent<Monster>(out var monster))
-            {
-                monster.Die();
-            }
-            else
-            {
-                Destroy(hitMonster.gameObject);
-            }
+            Destroy(hitMonster.gameObject);
         }
         else
         {
@@ -141,7 +131,6 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            AudioManager.Instance?.PlayPlayerHurt();
             StartCoroutine(InvincibilityRoutine());
         }
     }
@@ -150,7 +139,6 @@ public class PlayerController : MonoBehaviour
     {
         isDead = true;
         if (animator != null) animator.SetTrigger(DeathTrigger);
-        AudioManager.Instance?.PlayPlayerDead();
         GameManager.Instance.TriggerGameOver();
     }
 
@@ -205,4 +193,4 @@ public class PlayerController : MonoBehaviour
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(hitPoint.position, hitRadius);
     }
-}
+}*/

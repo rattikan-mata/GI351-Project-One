@@ -1,4 +1,4 @@
-using UnityEngine;
+/*using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using TMPro;
@@ -59,7 +59,6 @@ public class UIManager : MonoBehaviour
         if (mainMenuPanel != null && mainMenuPanel.activeSelf)
         {
             Time.timeScale = 0f;
-            AudioManager.Instance?.PlayBGMMainMenu();
         }
         else
         {
@@ -89,14 +88,12 @@ public class UIManager : MonoBehaviour
     #region Main Menu & CutScene
     public void OnStartButtonClicked()
     {
-        AudioManager.Instance?.PlayMenuStart();
         if (mainMenuPanel != null) mainMenuPanel.SetActive(false);
         StartCutScene();
     }
 
     public void OnExitButtonClicked()
     {
-        AudioManager.Instance?.PlayUIClick();
         Debug.Log("Exit Game");
         Application.Quit();
     }
@@ -105,7 +102,6 @@ public class UIManager : MonoBehaviour
     {
         isInCutScene = true;
         Time.timeScale = 0f;
-        AudioManager.Instance?.PlayFadeInCutscene();
         if (cutScenePanel != null) cutScenePanel.SetActive(true);
     }
 
@@ -115,7 +111,6 @@ public class UIManager : MonoBehaviour
         Time.timeScale = 1f;
         if (cutScenePanel != null) cutScenePanel.SetActive(false);
         if (gameplayHUD != null) gameplayHUD.SetActive(true);
-        AudioManager.Instance?.PlayBGMInGame(); // เริ่มเข้าโหมดเล่น สลับเพลงเป็น InGame
     }
     #endregion
 
@@ -124,7 +119,6 @@ public class UIManager : MonoBehaviour
     {
         isPaused = true;
         Time.timeScale = 0f;
-        AudioManager.Instance?.PlayUIClick();
         if (pauseDimImage != null) pauseDimImage.gameObject.SetActive(true);
         if (pausePanel != null) pausePanel.SetActive(true);
     }
@@ -133,21 +127,18 @@ public class UIManager : MonoBehaviour
     {
         isPaused = false;
         Time.timeScale = 1f;
-        AudioManager.Instance?.PlayUIClick();
         if (pauseDimImage != null) pauseDimImage.gameObject.SetActive(false);
         if (pausePanel != null) pausePanel.SetActive(false);
     }
 
     public void RestartGame()
     {
-        AudioManager.Instance?.PlayUIClick();
         Time.timeScale = 1f;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
     public void GoToMainMenu()
     {
-        AudioManager.Instance?.PlayUIClick();
         Time.timeScale = 1f;
         SceneManager.LoadScene("MainMenuScene");
     }
@@ -231,4 +222,4 @@ public class UIManager : MonoBehaviour
         }
     }
     #endregion
-}
+}*/

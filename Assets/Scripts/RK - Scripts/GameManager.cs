@@ -42,7 +42,6 @@ public class GameManager : MonoBehaviour
     [SerializeField] private float baseMonsterSpeed = 5f;
     public float MonsterSpeed { get; private set; }
 
-    // เก็บตัวคูณของ Wave ปัจจุบัน
     private float currentWaveBgMult = 1f;
     private float currentWaveMonsterMult = 1f;
 
@@ -50,7 +49,6 @@ public class GameManager : MonoBehaviour
     #endregion
 
     #region Rage Integration (Additive Speed)
-    // ค่า Bonus ที่บวกเพิ่มมาจาก ScoreManager (ค่าเริ่มต้น = 0)
     private float rageBgBonus = 0f;
     private float rageMonsterBonus = 0f;
 
@@ -70,7 +68,6 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            // สูตร: นำ (ตัวคูณ Wave + ตัวบวก Rage) ค่อยเอาไปคูณ Base Speed
             float finalBgMult = currentWaveBgMult + rageBgBonus;
             float finalMonsterMult = currentWaveMonsterMult + rageMonsterBonus;
 
@@ -90,7 +87,7 @@ public class GameManager : MonoBehaviour
 
     [Header("Spawner References")]
     [SerializeField] private GameObject monsterPrefab;
-    [SerializeField] private GameObject eliteMonsterPrefab; 
+    [SerializeField] private GameObject eliteMonsterPrefab;
     [SerializeField] private Transform spawnPoint;
 
     private int currentWaveIndex = 0;
@@ -106,6 +103,12 @@ public class GameManager : MonoBehaviour
         currentWaveMonsterMult = 1f;
         CalculateFinalSpeeds();
 
+        // ส่ง List ของ Waves ทั้งหมดให้ UIManager ไปสร้างไอคอนบน Minimap ให้พอดีกับจำนวนเวฟ
+        if (UIManager.Instance != null)
+        {
+            UIManager.Instance.SpawnMinimapFlags(waves);
+        }
+
         StartNextWave();
     }
 
@@ -115,15 +118,15 @@ public class GameManager : MonoBehaviour
         {
             WaveData wave = waves[currentWaveIndex];
 
-            // ดึงค่า Multiplier จาก Wave
             currentWaveBgMult = wave.bgSpeedMultiplier;
             currentWaveMonsterMult = wave.monsterSpeedMultiplier;
 
-            CalculateFinalSpeeds(); // รวมค่าตัวคูณ Wave กับ Rage Bonus
+            CalculateFinalSpeeds();
 
             if (UIManager.Instance != null)
             {
-                UIManager.Instance.UpdateMinimapByWave(currentWaveIndex, 11);
+                // เลื่อนหลอด Slider ตามจำนวนเวฟที่มีจริงๆ (+1 เผื่อจุดประตูตอนจบ)
+                UIManager.Instance.UpdateMinimapByWave(currentWaveIndex, waves.Count + 1);
             }
 
             monstersRemainingToSpawn = wave.monsterCount;
@@ -147,14 +150,12 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        // --- ปล่อย Elite Monster ตอนจบเวฟ ---
         if (wave.spawnEliteMonsterAtEnd && eliteMonsterPrefab != null && spawnPoint != null)
         {
             yield return waitInterval;
             Instantiate(eliteMonsterPrefab, spawnPoint.position, Quaternion.identity);
             activeMonstersInScene++;
         }
-        // --------------------------------------------------------
 
         isSpawning = false;
     }
@@ -205,14 +206,15 @@ public class GameManager : MonoBehaviour
 
     private void TriggerSecretCharacterSpawn()
     {
-        Debug.Log("[ALL WAVES CLEARED] Spawning Secret Character...");
+        Debug.Log("[ALL WAVES CLEARED] Spawning Secret Character/Door...");
 
         isGameHalted = true;
         CalculateFinalSpeeds();
 
         if (UIManager.Instance != null)
         {
-            UIManager.Instance.UpdateMinimapByWave(10, 11);
+            // ดันหลอด Minimap ไปที่จุดสุดท้าย (จุดที่เท่ากับ waves.Count)
+            UIManager.Instance.UpdateMinimapByWave(waves.Count, waves.Count + 1);
         }
 
         if (secretCharacterPrefab != null && secretSpawnPoint != null)
@@ -258,4 +260,3 @@ public class GameManager : MonoBehaviour
     }
     #endregion
 }
-

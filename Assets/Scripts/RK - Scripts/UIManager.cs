@@ -3,6 +3,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using TMPro;
 using System.Collections;
+using System.Collections.Generic;
 
 public class UIManager : MonoBehaviour
 {
@@ -14,6 +15,7 @@ public class UIManager : MonoBehaviour
 
     [Header("CutScene")]
     [SerializeField] private bool isCutSceneScene = false;
+    [SerializeField] private GameObject pressSpacePromptImage;
 
     [Header("Credit")]
     [SerializeField] private GameObject creditPanel;
@@ -56,9 +58,13 @@ public class UIManager : MonoBehaviour
 
     [Header("MiniMap")]
     [SerializeField] private Image spriteMinimap;
-    [SerializeField] private GameObject spriteFlagPrefab;
     [SerializeField] private RectTransform flagContainer;
     [SerializeField] private Slider minimapSlider;
+
+    [Header("MiniMap Icons")]
+    [SerializeField] private GameObject normalWaveIconPrefab; // ไอคอนเวฟปกติ
+    [SerializeField] private GameObject eliteWaveIconPrefab;  // ไอคอนเวฟที่มี Elite
+    [SerializeField] private GameObject doorIconPrefab;       // ไอคอนประตูตอนจบ
 
     private bool isPaused = false;
 
@@ -74,6 +80,12 @@ public class UIManager : MonoBehaviour
         if (isCutSceneScene)
         {
             Time.timeScale = 1f;
+
+            if (pressSpacePromptImage != null)
+            {
+                pressSpacePromptImage.SetActive(true);
+                StartCoroutine(BlinkPromptRoutine());
+            }
             return;
         }
 
@@ -83,7 +95,8 @@ public class UIManager : MonoBehaviour
             UpdatePillsUI(3);
             UpdateScoreUI(0, 0);
             UpdatePulsePhase(0);
-            SpawnMinimapFlags(11);
+
+            // ยกเลิกการสร้างธง 11 อันจากตรงนี้ ปล่อยให้ GameManager เป็นคนสั่งตอนเริ่มเกม
             UpdateMinimapProgress(0f);
 
             if (feedbackText != null) feedbackText.text = "";
@@ -105,36 +118,84 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    #region Minimap Flag Spawner & Slider Logic
-    public void SpawnMinimapFlags(int totalPoints = 11)
+    private IEnumerator BlinkPromptRoutine()
     {
-        if (spriteFlagPrefab == null || flagContainer == null) return;
+        if (pressSpacePromptImage == null) yield break;
+
+        CanvasGroup canvasGroup = pressSpacePromptImage.GetComponent<CanvasGroup>();
+        if (canvasGroup == null)
+        {
+            canvasGroup = pressSpacePromptImage.AddComponent<CanvasGroup>();
+        }
+
+        while (true)
+        {
+            float elapsed = 0f;
+            while (elapsed < 0.6f)
+            {
+                elapsed += Time.deltaTime;
+                canvasGroup.alpha = Mathf.Lerp(1f, 0.2f, elapsed / 0.6f);
+                yield return null;
+            }
+
+            elapsed = 0f;
+            while (elapsed < 0.6f)
+            {
+                elapsed += Time.deltaTime;
+                canvasGroup.alpha = Mathf.Lerp(0.2f, 1f, elapsed / 0.6f);
+                yield return null;
+            }
+        }
+    }
+
+    #region Minimap Flag Spawner & Slider Logic
+    public void SpawnMinimapFlags(List<WaveData> waves)
+    {
+        if (flagContainer == null) return;
 
         foreach (Transform child in flagContainer)
         {
             Destroy(child.gameObject);
         }
 
+        int totalPoints = waves.Count + 1; // จำนวนเวฟ + ประตูทางออก 1 บาน
         float width = flagContainer.rect.width;
 
         for (int i = 0; i < totalPoints; i++)
         {
-            GameObject flagObj = Instantiate(spriteFlagPrefab, flagContainer);
-            RectTransform rect = flagObj.GetComponent<RectTransform>();
+            GameObject prefabToSpawn = normalWaveIconPrefab;
 
-            if (rect != null)
+            if (i < waves.Count)
             {
-                rect.anchorMin = new Vector2(0f, 0.5f);
-                rect.anchorMax = new Vector2(0f, 0.5f);
-                rect.pivot = new Vector2(0.5f, 0.5f);
+                if (waves[i].spawnEliteMonsterAtEnd)
+                {
+                    prefabToSpawn = eliteWaveIconPrefab;
+                }
+            }
+            else
+            {
+                prefabToSpawn = doorIconPrefab;
+            }
 
-                float t = (float)i / (totalPoints - 1);
-                rect.anchoredPosition = new Vector2(t * width, 0f);
+            if (prefabToSpawn != null)
+            {
+                GameObject flagObj = Instantiate(prefabToSpawn, flagContainer);
+                RectTransform rect = flagObj.GetComponent<RectTransform>();
+
+                if (rect != null)
+                {
+                    rect.anchorMin = new Vector2(0f, 0.5f);
+                    rect.anchorMax = new Vector2(0f, 0.5f);
+                    rect.pivot = new Vector2(0.5f, 0.5f);
+
+                    float t = (float)i / (totalPoints - 1);
+                    rect.anchoredPosition = new Vector2(t * width, 0f);
+                }
             }
         }
     }
 
-    public void UpdateMinimapByWave(int waveIndex, int totalWavesAndSecret = 11)
+    public void UpdateMinimapByWave(int waveIndex, int totalWavesAndSecret)
     {
         float progress = (float)waveIndex / (totalWavesAndSecret - 1);
         UpdateMinimapProgress(progress);
@@ -211,11 +272,7 @@ public class UIManager : MonoBehaviour
         if (feedbackText == null) return;
 
         feedbackText.color = color;
-
-
         feedbackText.fontMaterial.SetColor("_UnderlayColor", color);
-
-        
 
         if (feedbackCoroutine != null)
         {

@@ -145,6 +145,7 @@ public class ScoreManager : MonoBehaviour
 
             if (isNewTopPhase && !wasTopPhase)
             {
+                AudioManager.Instance?.PlayRageUp();
                 AudioManager.Instance?.PlayRageStage3Loop();
             }
             else if (!isNewTopPhase && wasTopPhase)

@@ -6,7 +6,7 @@ AnimationClip:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Heart_Phase 3
+  m_Name: rage 1
   serializedVersion: 8
   m_Legacy: 0
   m_Compressed: 0
@@ -21,13 +21,13 @@ AnimationClip:
   - serializedVersion: 2
     curve:
     - time: 0
-      value: {fileID: 4349194590612477393, guid: 4b26635a11b534a42affbb3b9c6a30dc, type: 3}
-    - time: 0.25
-      value: {fileID: 8685835791614800407, guid: 4f5ee3a01383ce74ebe5987102fdbd3c, type: 3}
+      value: {fileID: -6360116305524664329, guid: 86d53dca507334244ab372d6fbef8435, type: 3}
+    - time: 0.16666667
+      value: {fileID: -6360116305524664329, guid: 86d53dca507334244ab372d6fbef8435, type: 3}
     - time: 0.33333334
-      value: {fileID: 4349194590612477393, guid: 4b26635a11b534a42affbb3b9c6a30dc, type: 3}
+      value: {fileID: 5858479730459764560, guid: 2e34618ae1c529c4fa85a6382c608cd1, type: 3}
     attribute: m_Sprite
-    path: Heart_Phase 1
+    path: 
     classID: 114
     script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
     flags: 2
@@ -39,7 +39,7 @@ AnimationClip:
   m_ClipBindingConstant:
     genericBindings:
     - serializedVersion: 2
-      path: 2320001262
+      path: 0
       attribute: 2015549526
       script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
       typeID: 114
@@ -49,9 +49,9 @@ AnimationClip:
       isSerializeReferenceCurve: 0
       metaData: 0
     pptrCurveMapping:
-    - {fileID: 4349194590612477393, guid: 4b26635a11b534a42affbb3b9c6a30dc, type: 3}
-    - {fileID: 8685835791614800407, guid: 4f5ee3a01383ce74ebe5987102fdbd3c, type: 3}
-    - {fileID: 4349194590612477393, guid: 4b26635a11b534a42affbb3b9c6a30dc, type: 3}
+    - {fileID: -6360116305524664329, guid: 86d53dca507334244ab372d6fbef8435, type: 3}
+    - {fileID: -6360116305524664329, guid: 86d53dca507334244ab372d6fbef8435, type: 3}
+    - {fileID: 5858479730459764560, guid: 2e34618ae1c529c4fa85a6382c608cd1, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}

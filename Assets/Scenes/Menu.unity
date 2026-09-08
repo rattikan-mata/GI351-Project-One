@@ -281,7 +281,7 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 0
-  m_Volume: 0.5
+  m_Volume: 0.272
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -595,7 +595,7 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 0
-  m_Volume: 0.561
+  m_Volume: 0.496
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -1087,7 +1087,7 @@ MonoBehaviour:
   fadeInMenu: {fileID: 0}
   fadeInCutscene: {fileID: 0}
   rageUp: {fileID: 8300000, guid: e4d03108b41edda4a817d75932bf99ea, type: 3}
-  goalSound: {fileID: 8300000, guid: 9a2901330dfd5e942bba622047d11395, type: 3}
+  goalSound: {fileID: 8300000, guid: 764bc64e933907b419d3a94b056c90ef, type: 3}
   rageStage3Source: {fileID: 954590122}
   rageStage3Clip: {fileID: 8300000, guid: 2be179d2dc44db0499643ebbb5ef1642, type: 3}
 --- !u!4 &1482587432
@@ -1138,7 +1138,7 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 0
-  m_Volume: 0.142
+  m_Volume: 0.049
   m_Pitch: 1
   Loop: 0
   Mute: 0

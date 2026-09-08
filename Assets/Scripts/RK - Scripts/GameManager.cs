@@ -256,6 +256,7 @@ public class GameManager : MonoBehaviour
         if (UIManager.Instance != null)
         {
             UIManager.Instance.ShowGameWin();
+            UIManager.Instance.HideHitZone(); 
         }
     }
     #endregion

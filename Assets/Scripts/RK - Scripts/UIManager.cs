@@ -273,9 +273,17 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    public void HideHitZone()
+    {
+        if (hitCircleSprite != null)
+        {
+            hitCircleSprite.SetActive(false);
+        }
+    }
+
     public void ShowFeedback(string message, Color color)
     {
-        // ตรวจสอบว่าเป็น Hit หรือ Miss จากข้อความ
+        
         bool isHit = message.Contains("Hit");
 
         if (isHit)

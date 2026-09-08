@@ -106,9 +106,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3ca3a783369663459e5f35f2f1845c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Potion
-  popHeight: 1.2
-  popDistance: 1
-  popDuration: 0.25
+  popHeight: 2
+  popDistance: 1.5
+  popDuration: 0.3
   acceleration: 18
   maxSpeed: 15
   healAmount: 1

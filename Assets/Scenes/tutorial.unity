@@ -1195,9 +1195,9 @@ MonoBehaviour:
     spawnEliteMonsterAtEnd: 1
   monsterPrefab: {fileID: 1649576280277407282, guid: 21a32323df5dbe744a250af1e6487e28, type: 3}
   eliteMonsterPrefab: {fileID: 5966462804116772361, guid: d055a78639936f648b40adf30eb6e293, type: 3}
-  spawnPoint: {fileID: 0}
+  spawnPoint: {fileID: 994825306}
   secretCharacterPrefab: {fileID: 3780262786638575776, guid: f457fb0e1c9e18d4baa5c3c2b81aac53, type: 3}
-  secretSpawnPoint: {fileID: 0}
+  secretSpawnPoint: {fileID: 1258052553}
 --- !u!4 &704738130
 Transform:
   m_ObjectHideFlags: 0

@@ -161,7 +161,8 @@ MonoBehaviour:
   comboContainer: {fileID: 0}
   scoreText: {fileID: 0}
   comboText: {fileID: 0}
-  feedbackText: {fileID: 0}
+  hitFeedbackText: {fileID: 0}
+  missFeedbackText: {fileID: 0}
   feedbackDisplayTime: 1
   pillImages:
   - {fileID: 0}
@@ -389,15 +390,15 @@ MonoBehaviour:
       m_Calls: []
   m_text: '"Press SPACEBAR"'
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: b17629ee66e629441801afcc26250554, type: 2}
-  m_sharedMaterial: {fileID: -7345062670712171200, guid: b17629ee66e629441801afcc26250554, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 2d82723391d58ab4c929a7d1cc68908b, type: 2}
+  m_sharedMaterial: {fileID: -7345062670712171200, guid: 2d82723391d58ab4c929a7d1cc68908b, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278190217
-  m_fontColor: {r: 0.5377358, g: 0, b: 0, a: 1}
+    rgba: 4290083817
+  m_fontColor: {r: 0.91372555, g: 0.48235297, b: 0.70980394, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:

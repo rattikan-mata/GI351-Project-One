@@ -145,17 +145,13 @@ public class ScoreManager : MonoBehaviour
 
             if (isNewTopPhase && !wasTopPhase)
             {
-                // เพิ่งเข้ามาถึง Stage 3 (ครั้งแรก หรือกลับขึ้นมาใหม่หลังจากหลุดไปแล้ว) -> เริ่ม loop
                 AudioManager.Instance?.PlayRageStage3Loop();
             }
             else if (!isNewTopPhase && wasTopPhase)
             {
-                // เพิ่งหลุดออกจาก Stage 3 (ไม่ว่าจะลงเฟสอื่นหรือหลุดหมดเลย) -> หยุดเสียงทันที
                 AudioManager.Instance?.StopRageStage3Loop();
             }
 
-            // เสียง Rage Up (one-shot) ใช้เฉพาะตอนขึ้นเฟสอื่นที่ไม่ใช่ Stage 3 เท่านั้น
-            // (Stage 3 ใช้ระบบ loop ข้างบนแยกต่างหากแล้ว)
             float oldRequiredRage = (currentActivePhase != null) ? currentActivePhase.requiredRage : 0f;
             float newRequiredRage = (newPhase != null) ? newPhase.requiredRage : 0f;
             bool isLevelingUp = newRequiredRage > oldRequiredRage;
@@ -167,8 +163,6 @@ public class ScoreManager : MonoBehaviour
 
             currentActivePhase = newPhase;
 
-            // ดึงค่า Bonus (+ความเร็ว) ส่งไปให้ GameManager
-            // หากไม่มีเฟสเลย Bonus = 0
             float bgBonus = (currentActivePhase != null) ? currentActivePhase.bgSpeedBonus : 0f;
             float monBonus = (currentActivePhase != null) ? currentActivePhase.monsterSpeedBonus : 0f;
             string phaseName = (currentActivePhase != null) ? currentActivePhase.phaseName : "Normal";
@@ -177,6 +171,21 @@ public class ScoreManager : MonoBehaviour
             {
                 GameManager.Instance.UpdateRageBonus(bgBonus, monBonus);
             }
+
+            // --- ส่วนที่ต้องเพิ่มใหม่ (อัปเดตแอนิเมชันหัวใจ) ---
+            int phaseLevel = 0; // 0 = ปิดหมด (โหมดปกติ)
+            if (currentActivePhase != null)
+            {
+                // คำนวณหาเฟส 1, 2, 3 โดยอิงจากลำดับลิสต์ (ลิสต์ถูกเรียงจากมากไปน้อย)
+                int index = ragePhases.IndexOf(currentActivePhase);
+                phaseLevel = ragePhases.Count - index;
+            }
+
+            if (UIManager.Instance != null)
+            {
+                UIManager.Instance.UpdatePulsePhase(phaseLevel); // สั่งเปิด GameObject ให้ตรงกับเฟส[cite: 38, 40]
+            }
+            // ------------------------------------------
 
             Debug.Log($"[RAGE SYSTEM] Phase: {phaseName} | BG Bonus: +{bgBonus} | Monster Bonus: +{monBonus}");
         }

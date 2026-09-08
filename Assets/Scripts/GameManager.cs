@@ -282,6 +282,7 @@ public class GameManager : MonoBehaviour
     {
         isGameHalted = true;
         CalculateFinalSpeeds();
+        AudioManager.Instance?.StopRageStage3Loop();
         StartCoroutine(GameOverDelayRoutine());
     }
 
@@ -299,6 +300,7 @@ public class GameManager : MonoBehaviour
     {
         isGameHalted = true;
         CalculateFinalSpeeds();
+        AudioManager.Instance?.StopRageStage3Loop();
         Time.timeScale = 0f;
         if (UIManager.Instance != null)
         {

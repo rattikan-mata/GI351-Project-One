@@ -114,10 +114,13 @@ MonoBehaviour:
   monsterLayer:
     serializedVersion: 2
     m_Bits: 8
-  invincibilityDuration: 2
+  missGracePeriod: 0.25
+  maxHealth: 3
+  invincibilityDuration: 1.25
   flashInterval: 0.15
   animator: {fileID: 8446918526885390186}
   spriteRenderer: {fileID: 7329845505709474665}
+  walkSpeed: 3
 --- !u!61 &6036488934228421445
 BoxCollider2D:
   m_ObjectHideFlags: 0

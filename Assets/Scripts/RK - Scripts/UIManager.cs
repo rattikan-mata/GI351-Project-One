@@ -106,6 +106,13 @@ public class UIManager : MonoBehaviour
             if (missFeedbackText != null) missFeedbackText.text = "";
 
             UpdateMinimapProgress(0f);
+
+            AudioManager.Instance?.PlayBGMInGame(); // เข้าโหมดเล่นจริงแล้ว สลับเพลงเป็น InGame
+        }
+        else
+        {
+            // ไม่ใช่ทั้ง CutScene และ Gameplay -> แปลว่าเป็นซีน Main Menu
+            AudioManager.Instance?.PlayBGMMainMenu();
         }
     }
 
@@ -113,6 +120,7 @@ public class UIManager : MonoBehaviour
     {
         if (isCutSceneScene && Input.GetKeyDown(KeyCode.Space))
         {
+            AudioManager.Instance?.PlayUIClick();
             StartGame();
             return;
         }
@@ -389,9 +397,9 @@ public class UIManager : MonoBehaviour
     public void GoToNextStage()
     {
         AudioManager.Instance?.PlayUIClick();
-        Time.timeScale = 1f; 
+        Time.timeScale = 1f;
 
-        
+
         int nextSceneIndex = SceneManager.GetActiveScene().buildIndex + 1;
         SceneManager.LoadScene(nextSceneIndex);
     }

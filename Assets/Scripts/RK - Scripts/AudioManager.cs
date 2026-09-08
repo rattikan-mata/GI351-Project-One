@@ -46,6 +46,9 @@ public class AudioManager : MonoBehaviour
     [Tooltip("ยังไม่มีไฟล์จริง (Type something ในผัง) เว้นว่างไว้ก่อนได้")]
     [SerializeField] private AudioClip elithMonsterDead;
 
+    [Header("Potion SFX")]
+    [SerializeField] private AudioClip potionPickup;
+
     // ---------------- Menu ----------------
     [Header("Menu SFX")]
     [SerializeField] private AudioClip menuStart;
@@ -154,6 +157,9 @@ public class AudioManager : MonoBehaviour
     // ================= Enemy =================
     public void PlayMonster1Dead() => PlaySFX(monster1Dead);
     public void PlayElithMonsterDead() => PlaySFX(elithMonsterDead);
+
+    // ================= Potion =================
+    public void PlayPotionPickup() => PlaySFX(potionPickup);
 
     // ================= Menu =================
     public void PlayMenuStart() => PlaySFX(menuStart);

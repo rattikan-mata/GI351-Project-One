@@ -74,6 +74,7 @@ public class Potion : MonoBehaviour
             if (collision.TryGetComponent<PlayerController>(out var player))
             {
                 player.Heal(healAmount);
+                AudioManager.Instance?.PlayPotionPickup();
                 Destroy(gameObject); // เก็บแล้วขวดยาหายไปทันที
             }
         }

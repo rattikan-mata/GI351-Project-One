@@ -28,9 +28,9 @@ Transform:
   m_GameObject: {fileID: 5966462804116772361}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.0923253, y: -0.9792421, z: -1}
-  m_LocalScale: {x: 0.24036916, y: 0.24036916, z: 0.24036916}
-  m_ConstrainProportionsScale: 0
+  m_LocalPosition: {x: -1.0923253, y: 0, z: -1}
+  m_LocalScale: {x: 0.41, y: 0.41, z: 0.41}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 1581886695405395119}
   m_Father: {fileID: 0}
@@ -161,6 +161,10 @@ MonoBehaviour:
   targetRingScale: {x: 1, y: 1, z: 1}
   spamDuration: 2
   potionPrefab: {fileID: 1707085892471080110, guid: 852cc7c0847ebb64692ead15de0cb4da, type: 3}
+  hitScaleMultiplier: 1.3
+  hitScaleDuration: 0.1
+  shakeDuration: 0.1
+  shakeMagnitude: 0.15
 --- !u!1 &6162254684028206953
 GameObject:
   m_ObjectHideFlags: 0

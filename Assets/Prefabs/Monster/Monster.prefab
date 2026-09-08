@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 944801927246393871}
   - component: {fileID: 3802479553203916107}
   - component: {fileID: 3706590053495539752}
+  - component: {fileID: 8982652616620004804}
   m_Layer: 3
   m_Name: Monster
   m_TagString: Monster
@@ -159,6 +160,28 @@ MonoBehaviour:
   startShrinkDistance: 4
   maxRingScale: {x: 2.5, y: 2.5, z: 1}
   targetRingScale: {x: 1, y: 1, z: 1}
+--- !u!95 &8982652616620004804
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1649576280277407282}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 7936ccc8e5807fe43a5a49046a496f7a, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &5910012355555072252
 GameObject:
   m_ObjectHideFlags: 0

@@ -133,6 +133,7 @@ GameObject:
   - component: {fileID: 9864640}
   - component: {fileID: 9864639}
   - component: {fileID: 9864637}
+  - component: {fileID: 9864644}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -347,6 +348,23 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &9864644
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9864636}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64beeb21f73aeb2419294a609147c511, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HeartbeatEffect
+  pinkFrame: {fileID: 1266998318}
+  heartFrame: {fileID: 257680799}
+  phase1Opacity: 0.3
+  phase2Opacity: 0.6
+  phase3Opacity: 1
 --- !u!1 &24278024
 GameObject:
   m_ObjectHideFlags: 0

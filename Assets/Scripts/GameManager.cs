@@ -204,13 +204,22 @@ public class GameManager : MonoBehaviour
     [Tooltip("ลาก GameObject ของ UI Tutorial มาใส่ (เว้นว่างไว้ถ้าซีนนี้ไม่มี Tutorial)")]
     [SerializeField] private GameObject tutorialPanel;
 
+    private void Update()
+    {
+        // ให้กด Space ปิด Tutorial ได้เหมือนกับกดปุ่ม "เล่นต่อ"
+        if (tutorialPanel != null && tutorialPanel.activeSelf && Input.GetKeyDown(KeyCode.Space))
+        {
+            OnTutorialContinueClicked();
+        }
+    }
+
     private void ShowTutorial()
     {
         Time.timeScale = 0f; // หยุดเกมทั้งหมด (มอนสเตอร์/พื้นหลังจะหยุดขยับเองเพราะใช้ Time.deltaTime)
         tutorialPanel.SetActive(true);
     }
 
-    /// <summary>ผูกกับปุ่ม "เล่นต่อ" บน Tutorial Panel ใน Inspector (OnClick)</summary>
+    /// <summary>ผูกกับปุ่ม "เล่นต่อ" บน Tutorial Panel ใน Inspector (OnClick) หรือกด Space ก็เรียกอันนี้เหมือนกัน</summary>
     public void OnTutorialContinueClicked()
     {
         AudioManager.Instance?.PlayUIClick();

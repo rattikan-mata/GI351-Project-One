@@ -109,7 +109,16 @@ public class GameManager : MonoBehaviour
             UIManager.Instance.SpawnMinimapFlags(waves);
         }
 
-        StartNextWave();
+        // ถ้ามี Tutorial Panel ผูกไว้ -> โชว์ก่อน แล้วรอกดปุ่มค่อยเริ่ม Wave 1
+        // ถ้าไม่มี (ลาก GameObject มาใส่) -> ถือว่าซีนนี้ไม่มี tutorial เริ่มเวฟทันทีเหมือนเดิม
+        if (tutorialPanel != null)
+        {
+            ShowTutorial();
+        }
+        else
+        {
+            StartNextWave();
+        }
     }
 
     public void StartNextWave()
@@ -190,6 +199,32 @@ public class GameManager : MonoBehaviour
     }
     #endregion
 
+    #region Tutorial (Pre-Wave1 Popup)
+    [Header("Tutorial")]
+    [Tooltip("ลาก GameObject ของ UI Tutorial มาใส่ (เว้นว่างไว้ถ้าซีนนี้ไม่มี Tutorial)")]
+    [SerializeField] private GameObject tutorialPanel;
+
+    private void ShowTutorial()
+    {
+        Time.timeScale = 0f; // หยุดเกมทั้งหมด (มอนสเตอร์/พื้นหลังจะหยุดขยับเองเพราะใช้ Time.deltaTime)
+        tutorialPanel.SetActive(true);
+    }
+
+    /// <summary>ผูกกับปุ่ม "เล่นต่อ" บน Tutorial Panel ใน Inspector (OnClick)</summary>
+    public void OnTutorialContinueClicked()
+    {
+        AudioManager.Instance?.PlayUIClick();
+
+        if (tutorialPanel != null)
+        {
+            tutorialPanel.SetActive(false);
+        }
+
+        Time.timeScale = 1f;
+        StartNextWave();
+    }
+    #endregion
+
     #region Secret Character (Win Condition)
     [Header("Secret Character (Win Condition)")]
     [SerializeField] private GameObject secretCharacterPrefab;
@@ -213,10 +248,10 @@ public class GameManager : MonoBehaviour
 
         if (UIManager.Instance != null)
         {
-            
+
             UIManager.Instance.UpdateMinimapByWave(waves.Count, waves.Count + 1);
 
-            
+
             UIManager.Instance.HideHitZone();
         }
 
@@ -259,7 +294,7 @@ public class GameManager : MonoBehaviour
         if (UIManager.Instance != null)
         {
             UIManager.Instance.ShowGameWin();
-            UIManager.Instance.HideHitZone(); 
+            UIManager.Instance.HideHitZone();
         }
     }
     #endregion

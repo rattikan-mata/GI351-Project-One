@@ -1079,7 +1079,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 84a8b7c4b11a9fd438ab4a95cf26f7cc, type: 3}
   - {fileID: 8300000, guid: a8a9f685f57167849b3c2cf54e52de59, type: 3}
   playerDead: {fileID: 8300000, guid: 89450b25f15f38c4d852f6689d7aa2f0, type: 3}
-  monster1Dead: {fileID: 8300000, guid: 55cf9d40b32fcbd48a31a030cdf8a6f3, type: 3}
+  monster1Dead: {fileID: 8300000, guid: 4f4a167e775feab49bef17a1b96a7a6f, type: 3}
   elithMonsterDead: {fileID: 0}
   potionPickup: {fileID: 8300000, guid: b3b1d26e1467df8478fcdc185a5903ee, type: 3}
   menuStart: {fileID: 8300000, guid: 9c294c11c0241294ab779faea7129a1a, type: 3}

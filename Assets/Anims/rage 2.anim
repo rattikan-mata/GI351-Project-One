@@ -20,14 +20,14 @@ AnimationClip:
   m_PPtrCurves:
   - serializedVersion: 2
     curve:
-    - time: 0
+    - time: 0.083333336
       value: {fileID: 4349194590612477393, guid: 4b26635a11b534a42affbb3b9c6a30dc, type: 3}
     - time: 0.16666667
       value: {fileID: 8685835791614800407, guid: 4f5ee3a01383ce74ebe5987102fdbd3c, type: 3}
     - time: 0.25
       value: {fileID: 8685835791614800407, guid: 4f5ee3a01383ce74ebe5987102fdbd3c, type: 3}
     attribute: m_Sprite
-    path: Heart_Phase 3
+    path: 
     classID: 114
     script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
     flags: 2
@@ -39,7 +39,7 @@ AnimationClip:
   m_ClipBindingConstant:
     genericBindings:
     - serializedVersion: 2
-      path: 1682311618
+      path: 0
       attribute: 2015549526
       script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
       typeID: 114

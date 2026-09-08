@@ -595,7 +595,7 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.561
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -1072,15 +1072,16 @@ MonoBehaviour:
   bgmMainMenu: {fileID: 8300000, guid: eb32429ef72656e419d89d845d0b870a, type: 3}
   bgmInGame: {fileID: 8300000, guid: 5c3015923e4d953458ddcbd9933e7bf9, type: 3}
   ambientLoop: {fileID: 0}
-  playerAttack: {fileID: 8300000, guid: e4be7f7c2a1b52841bb0b8bf090fa2c2, type: 3}
+  playerAttack: {fileID: 8300000, guid: c929e49855b68db44b4ebcef4c3de242, type: 3}
   attackSfxCooldown: 0.5
   playerHurtClips:
   - {fileID: 8300000, guid: a0c9b2a4c0e35f44e8511e84d1643ab8, type: 3}
   - {fileID: 8300000, guid: 84a8b7c4b11a9fd438ab4a95cf26f7cc, type: 3}
   - {fileID: 8300000, guid: a8a9f685f57167849b3c2cf54e52de59, type: 3}
   playerDead: {fileID: 8300000, guid: 89450b25f15f38c4d852f6689d7aa2f0, type: 3}
-  monster1Dead: {fileID: 0}
+  monster1Dead: {fileID: 8300000, guid: 55cf9d40b32fcbd48a31a030cdf8a6f3, type: 3}
   elithMonsterDead: {fileID: 0}
+  potionPickup: {fileID: 8300000, guid: b3b1d26e1467df8478fcdc185a5903ee, type: 3}
   menuStart: {fileID: 8300000, guid: 9c294c11c0241294ab779faea7129a1a, type: 3}
   uiClick: {fileID: 8300000, guid: f4e3a0b73b69e6a4da18430403132c11, type: 3}
   fadeInMenu: {fileID: 0}
@@ -1275,7 +1276,8 @@ MonoBehaviour:
   comboContainer: {fileID: 0}
   scoreText: {fileID: 0}
   comboText: {fileID: 0}
-  feedbackText: {fileID: 0}
+  hitFeedbackText: {fileID: 0}
+  missFeedbackText: {fileID: 0}
   feedbackDisplayTime: 1
   pillImages: []
   pulseAnimPhases:

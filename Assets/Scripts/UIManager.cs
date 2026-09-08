@@ -356,6 +356,7 @@ public class UIManager : MonoBehaviour
     public void RestartGame()
     {
         AudioManager.Instance?.PlayUIClick();
+        AudioManager.Instance?.StopRageStage3Loop();
         Time.timeScale = 1f;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
@@ -363,6 +364,7 @@ public class UIManager : MonoBehaviour
     public void GoToMainMenu()
     {
         AudioManager.Instance?.PlayUIClick();
+        AudioManager.Instance?.StopRageStage3Loop();
         Time.timeScale = 1f;
         SceneManager.LoadScene(0);
     }

@@ -173,7 +173,7 @@ public class ScoreManager : MonoBehaviour
                 GameManager.Instance.UpdateRageBonus(bgBonus, monBonus);
             }
 
-            // --- ส่วนที่ต้องเพิ่มใหม่ (อัปเดตแอนิเมชันหัวใจ) ---
+            // --- ส่วนที่อัปเดตแอนิเมชันหัวใจ (แก้ใหม่) ---
             int phaseLevel = 0; // 0 = ปิดหมด (โหมดปกติ)
             if (currentActivePhase != null)
             {
@@ -182,9 +182,11 @@ public class ScoreManager : MonoBehaviour
                 phaseLevel = ragePhases.Count - index;
             }
 
-            if (UIManager.Instance != null)
+            // ค้นหาสคริปต์ HeartbeatEffect ใน Scene และส่งค่าเฟสไปให้
+            HeartbeatEffect heartbeat = FindObjectOfType<HeartbeatEffect>();
+            if (heartbeat != null)
             {
-                UIManager.Instance.UpdatePulsePhase(phaseLevel); // สั่งเปิด GameObject ให้ตรงกับเฟส[cite: 38, 40]
+                heartbeat.SetHeartbeatPhase(phaseLevel);
             }
             // ------------------------------------------
 

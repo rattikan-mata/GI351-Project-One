@@ -74,6 +74,9 @@ public class PlayerController : MonoBehaviour
     {
         if (isDead) return;
 
+        // เกมหยุดอยู่ (Tutorial popup หรือ Pause) -> ไม่ให้กด Space ตี กันเสีย Miss ฟรี
+        if (Time.timeScale == 0f) return;
+
         if (isWalkingToSecret)
         {
             if (targetSecretChar != null)

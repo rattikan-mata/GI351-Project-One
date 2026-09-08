@@ -3001,12 +3001,12 @@ MonoBehaviour:
     monsterSpeedMultiplier: 1.3
     secPerMonster: 0.5
     delayBeforeNextWave: 0
-    spawnEliteMonsterAtEnd: 0
+    spawnEliteMonsterAtEnd: 1
   - waveName: Wave 3
-    monsterCount: 4
+    monsterCount: 10
     bgSpeedMultiplier: 1.3
     monsterSpeedMultiplier: 1.3
-    secPerMonster: 0.8
+    secPerMonster: 0.45
     delayBeforeNextWave: 0
     spawnEliteMonsterAtEnd: 0
   - waveName: wave 4
@@ -3029,12 +3029,12 @@ MonoBehaviour:
     monsterSpeedMultiplier: 1.3
     secPerMonster: 0.8
     delayBeforeNextWave: 0.5
-    spawnEliteMonsterAtEnd: 0
+    spawnEliteMonsterAtEnd: 1
   - waveName: wave 7
-    monsterCount: 3
+    monsterCount: 10
     bgSpeedMultiplier: 1.3
     monsterSpeedMultiplier: 1.3
-    secPerMonster: 0.5
+    secPerMonster: 0.4
     delayBeforeNextWave: 0.2
     spawnEliteMonsterAtEnd: 0
   - waveName: wave 8
@@ -3050,12 +3050,12 @@ MonoBehaviour:
     monsterSpeedMultiplier: 1.3
     secPerMonster: 0.5
     delayBeforeNextWave: 0.2
-    spawnEliteMonsterAtEnd: 0
+    spawnEliteMonsterAtEnd: 1
   - waveName: wave 10
-    monsterCount: 4
+    monsterCount: 10
     bgSpeedMultiplier: 1.3
     monsterSpeedMultiplier: 1.3
-    secPerMonster: 0.5
+    secPerMonster: 0.35
     delayBeforeNextWave: 0.5
     spawnEliteMonsterAtEnd: 0
   monsterPrefab: {fileID: 1649576280277407282, guid: 21a32323df5dbe744a250af1e6487e28, type: 3}

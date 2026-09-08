@@ -21,14 +21,14 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject creditPanel;
 
     [Header("GamePlay")]
-    
+
     [SerializeField] private GameObject gameplayHUD;
     [SerializeField] private GameObject hitCircleSprite;
     [SerializeField] private GameObject comboContainer;
     [SerializeField] private TextMeshProUGUI scoreText;
     [SerializeField] private TextMeshProUGUI comboText;
 
-   
+
     [SerializeField] private TextMeshProUGUI hitFeedbackText;
     [SerializeField] private TextMeshProUGUI missFeedbackText;
 
@@ -101,7 +101,7 @@ public class UIManager : MonoBehaviour
             UpdateScoreUI(0, 0);
             UpdatePulsePhase(0);
 
-            
+
             if (hitFeedbackText != null) hitFeedbackText.text = "";
             if (missFeedbackText != null) missFeedbackText.text = "";
 
@@ -283,7 +283,7 @@ public class UIManager : MonoBehaviour
 
     public void ShowFeedback(string message, Color color)
     {
-        
+
         bool isHit = message.Contains("Hit");
 
         if (isHit)
@@ -309,7 +309,7 @@ public class UIManager : MonoBehaviour
     {
         yield return waitFeedback;
 
-        
+
         if (hitFeedbackText != null) hitFeedbackText.text = "";
         if (missFeedbackText != null) missFeedbackText.text = "";
     }
@@ -379,10 +379,21 @@ public class UIManager : MonoBehaviour
     {
         if (ScoreManager.Instance != null)
         {
-            if (totalScoreText != null) totalScoreText.SetText("Score: {0}", ScoreManager.Instance.CurrentScore);
-            if (maxComboText != null) maxComboText.SetText("Max Combo: {0}", ScoreManager.Instance.MaxCombo);
-            if (totalMissText != null) totalMissText.SetText("Total Miss: {0}", ScoreManager.Instance.TotalMisses);
+
+            if (totalScoreText != null) totalScoreText.SetText("{0}", ScoreManager.Instance.CurrentScore);
+            if (maxComboText != null) maxComboText.SetText("{0}", ScoreManager.Instance.MaxCombo);
+            if (totalMissText != null) totalMissText.SetText("{0}", ScoreManager.Instance.TotalMisses);
         }
+    }
+
+    public void GoToNextStage()
+    {
+        AudioManager.Instance?.PlayUIClick();
+        Time.timeScale = 1f; 
+
+        
+        int nextSceneIndex = SceneManager.GetActiveScene().buildIndex + 1;
+        SceneManager.LoadScene(nextSceneIndex);
     }
     #endregion
 }

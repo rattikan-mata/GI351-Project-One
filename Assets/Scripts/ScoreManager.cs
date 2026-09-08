@@ -172,17 +172,29 @@ public class ScoreManager : MonoBehaviour
             {
                 GameManager.Instance.UpdateRageBonus(bgBonus, monBonus);
             }
-
-            // --- ส่วนที่อัปเดตแอนิเมชันหัวใจ (แก้ใหม่) ---
+            // --- ส่วนที่อัปเดตแอนิเมชันหัวใจ และ กรอบชมพู (แก้ใหม่) ---
             int phaseLevel = 0; // 0 = ปิดหมด (โหมดปกติ)
+
             if (currentActivePhase != null)
             {
-                // คำนวณหาเฟส 1, 2, 3 โดยอิงจากลำดับลิสต์ (ลิสต์ถูกเรียงจากมากไปน้อย)
-                int index = ragePhases.IndexOf(currentActivePhase);
-                phaseLevel = ragePhases.Count - index;
+                // เช็คจาก "ชื่อ Phase" โดยตรงเลยเพื่อความชัวร์ ป้องกันบัคกรณีตั้งจำนวน List ไม่เท่ากับ 3
+                if (currentActivePhase.phaseName.Contains("3")) phaseLevel = 3;
+                else if (currentActivePhase.phaseName.Contains("2")) phaseLevel = 2;
+                else if (currentActivePhase.phaseName.Contains("1")) phaseLevel = 1;
+                else
+                {
+                    int index = ragePhases.IndexOf(currentActivePhase);
+                    phaseLevel = ragePhases.Count - index;
+                }
             }
 
-            // ค้นหาสคริปต์ HeartbeatEffect ใน Scene และส่งค่าเฟสไปให้
+            // 1. สั่งรันหัวใจเต้นอันเก่า (Pulse Anim) กลับมาเหมือนเดิม
+            if (UIManager.Instance != null)
+            {
+                UIManager.Instance.UpdatePulsePhase(phaseLevel);
+            }
+
+            // 2. สั่งรันกรอบชมพูอันใหม่ (Pink Frame)
             HeartbeatEffect heartbeat = FindObjectOfType<HeartbeatEffect>();
             if (heartbeat != null)
             {

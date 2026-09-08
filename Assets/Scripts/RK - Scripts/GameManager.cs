@@ -213,8 +213,11 @@ public class GameManager : MonoBehaviour
 
         if (UIManager.Instance != null)
         {
-            // ดันหลอด Minimap ไปที่จุดสุดท้าย (จุดที่เท่ากับ waves.Count)
+            
             UIManager.Instance.UpdateMinimapByWave(waves.Count, waves.Count + 1);
+
+            
+            UIManager.Instance.HideHitZone();
         }
 
         if (secretCharacterPrefab != null && secretSpawnPoint != null)

@@ -2743,14 +2743,14 @@ MonoBehaviour:
   waves:
   - waveName: Wave 1
     monsterCount: 5
-    bgSpeedMultiplier: 1.3
+    bgSpeedMultiplier: 1
     monsterSpeedMultiplier: 1.2
     secPerMonster: 1
     delayBeforeNextWave: 1
     spawnEliteMonsterAtEnd: 1
   - waveName: Wave 2
     monsterCount: 0
-    bgSpeedMultiplier: 1.3
+    bgSpeedMultiplier: 1
     monsterSpeedMultiplier: 1.2
     secPerMonster: 1.5
     delayBeforeNextWave: 1

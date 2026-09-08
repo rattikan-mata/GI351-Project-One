@@ -1086,7 +1086,7 @@ MonoBehaviour:
   uiClick: {fileID: 8300000, guid: f4e3a0b73b69e6a4da18430403132c11, type: 3}
   fadeInMenu: {fileID: 0}
   fadeInCutscene: {fileID: 0}
-  rageUp: {fileID: 8300000, guid: e4d03108b41edda4a817d75932bf99ea, type: 3}
+  rageUp: {fileID: 8300000, guid: 1a9e5f34b32a6084d9ffcc06555058f7, type: 3}
   goalSound: {fileID: 8300000, guid: 764bc64e933907b419d3a94b056c90ef, type: 3}
   rageStage3Source: {fileID: 954590122}
   rageStage3Clip: {fileID: 8300000, guid: 2be179d2dc44db0499643ebbb5ef1642, type: 3}

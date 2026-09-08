@@ -3258,9 +3258,9 @@ MonoBehaviour:
   ragePhases:
   - phaseName: 1
     requiredRage: 0
-    bgSpeedBonus: 0.1
-    monsterSpeedBonus: 0.1
-    scoreMultiplier: 1
+    bgSpeedBonus: 0.3
+    monsterSpeedBonus: 0.3
+    scoreMultiplier: 1.1
   - phaseName: 2
     requiredRage: 10
     bgSpeedBonus: 0.6
@@ -6939,8 +6939,8 @@ SceneRoots:
   - {fileID: 704738130}
   - {fileID: 818075704}
   - {fileID: 1246382346}
-  - {fileID: 801552823}
   - {fileID: 1448361890}
   - {fileID: 1258052553}
   - {fileID: 994825306}
+  - {fileID: 801552823}
   - {fileID: 9864643}

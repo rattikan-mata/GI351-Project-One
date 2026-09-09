@@ -229,6 +229,17 @@ public class GameManager : MonoBehaviour
             tutorialPanel.SetActive(false);
         }
 
+        // เรียก Coroutine เพื่อรอให้จบเฟรมนี้ก่อน
+        StartCoroutine(ResumeAfterTutorialRoutine());
+    }
+
+    // เพิ่ม Coroutine ใหม่เข้าไปด้านล่าง
+    private IEnumerator ResumeAfterTutorialRoutine()
+    {
+        // yield return null จะสั่งให้เกมรอข้ามไป 1 เฟรม 
+        // ทำให้ PlayerController รับรู้ว่า Time.timeScale ยังเป็น 0 อยู่ในเฟรมที่กดปิด UI
+        yield return null;
+
         Time.timeScale = 1f;
         StartNextWave();
     }
